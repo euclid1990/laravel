@@ -1,0 +1,99 @@
+version: "3.7"
+
+services:
+  php:
+    build:
+      context: .envs/dev
+      dockerfile: php/Dockerfile
+    image: sunos-php:dev
+    restart: on-failure
+    volumes:
+      - .:/var/www/app
+      - composer_cache:/root/.composer
+    expose:
+      - "9000"
+    working_dir: /var/www/app
+    networks:
+      - sunos
+
+  cert:
+    build:
+      context: .envs/dev
+      dockerfile: cert/Dockerfile
+    image: sunos-cert:dev
+    command: [/scripts/command.sh, localhost]
+    volumes:
+      - ./.envs/dev/cert/files:/files
+    networks:
+      - sunos
+    environment:
+      HT_USER: web
+      HT_PASSWORD: 123456
+
+  nginx:
+    build:
+      context: .envs/dev
+      dockerfile: nginx/Dockerfile
+    image: sunos-nginx:dev
+    restart: on-failure
+    ports:
+      - "8080:80"
+      - "8443:443"
+      - "8444:444"
+    volumes:
+      - ./.envs/dev/nginx/conf.d:/etc/nginx/conf.d
+      - ./.envs/dev/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./.envs/dev/cert/files:/etc/nginx/certs
+      - .:/var/www/app
+    working_dir: /var/www/app
+    networks:
+      - sunos
+
+  mysql:
+    build:
+      context: .envs/dev
+      dockerfile: mysql/Dockerfile
+    image: sunos-mysql:dev
+    restart: on-failure
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --general-log=true --general-log-file=/var/log/mysql/query.log
+    volumes:
+      - mysql_data:/var/lib/mysql
+    expose:
+      - "3306"
+    networks:
+      - sunos
+    environment:
+      MYSQL_ROOT_PASSWORD: ms_root
+      MYSQL_DATABASE: ms_database
+      MYSQL_USER: ms_user
+      MYSQL_PASSWORD: ms_password
+
+  phpmyadmin:
+    image: busybox:1.30.1
+    command: [/bin/sh, /var/www/app/.envs/dev/phpmyadmin/command.sh]
+    volumes:
+      - .:/var/www/app
+    working_dir: /var/www/app/.envs/dev/phpmyadmin
+    networks:
+      - sunos
+
+  redis:
+    image: redis:5.0.3
+    command: ["bash", "-c", "docker-entrypoint.sh --requirepass $${REDIS_PASSWORD}"]
+    ports:
+      - 6379:6379
+    networks:
+      - sunos
+    environment:
+      REDIS_PASSWORD: rd_password
+
+networks:
+  sunos:
+    name: sunos
+    driver: bridge
+
+volumes:
+  mysql_data:
+    external: true
+  composer_cache:
+    external: true

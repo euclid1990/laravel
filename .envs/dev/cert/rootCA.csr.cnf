@@ -1,0 +1,14 @@
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+distinguished_name = dn
+
+[dn]
+C=VN
+ST=Hanoi
+L=Hanoi
+O=MyCompany
+OU=Division
+emailAddress=admin@example.com
+CN=Localhost Certification Authority
