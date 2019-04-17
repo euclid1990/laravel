@@ -7,6 +7,7 @@
 ## Completed
 
 - [x] Init Laravel
+- [x] Init Docker development environment
 
 ## Prerequisites
 
@@ -18,8 +19,12 @@ To install the development dependencies you will need:
 ## Development
 
 ```terminal
-$ docker-compose up
+$ chmod a+x ./docker.sh
+$ ./docker.sh start
 ```
+
+- Web: https://localhost:8443 `[Basic Authenticate] user:web password:123456`
+- PhpMyAdmin: https://localhost:8444
 
 ## Testing
 
