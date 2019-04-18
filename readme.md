@@ -8,6 +8,7 @@
 
 - [x] Init Laravel
 - [x] Init Docker development environment
+- [] Create base directory structure
 
 ## Prerequisites
 
@@ -26,27 +27,32 @@ $ ./docker.sh start
 - Web: https://localhost:8443 `[Basic Authenticate] user:web password:123456`
 - PhpMyAdmin: https://localhost:8444
 
+## Build
+
+- For re-build docker images and re-create containers
+```terminal
+$ ./docker.sh test
+```
+- Attach to a running container
+```terminal
+$ ./docker.sh exec {service_name}
+```
+
 ## Testing
 
 ## Linting
 
-- PHPCS
-
+- PHP code
 ```terminal
-$ composer install
-$ ./docker.sh build
+$ ./docker.sh exec php
+### List coding standard rules
+$ vendor/bin/phpcs -i
+### Run phpcs check
+$ vendor/bin/phpcs --standard=SunOs app/ --encoding=utf-8
 ```
-
-- Check List Standard
-
+- Javascript code
 ```terminal
-$ /usr/bin/phpcs -i
-```
-
-- Run Phpcs check
-
-```terminal
-$ vendor/bin/phpcs --standard=SunOs /path/to/file/need/check
+$ TBD
 ```
 
 ## Contribute

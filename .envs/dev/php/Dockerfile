@@ -57,6 +57,8 @@ RUN usermod -u 1000 www-data
 
 WORKDIR /var/www/app
 
+COPY php/php.ini /usr/local/etc/php/php.ini
+
 COPY php/*.sh /scripts/
 
 COPY common/wait-for-it.sh /scripts/

@@ -5,7 +5,7 @@ set -o pipefail
 
 if [ -z "${1-}" ]; then
   echo "Please input {action} to execute command"
-  echo "Example: [start|stop|restart|build|logs|ps|clean|destroy]"
+  echo "Example: [start|stop|restart|build|exec|logs|ps|clean|destroy|test]"
   echo "Usage: $ docker.sh {action}"
   exit;
 else
@@ -13,7 +13,7 @@ else
     build|pull|exec)
       if [ -z "${2-}" ]; then
         echo "Input {service} to execute command if you dont want perform all"
-        echo "Example: [php|nginx|mysql|cert]"
+        echo "Example: [php|nginx|mysql|cert|redis]"
         echo "Usage: $ docker.sh {action} {service}"
       fi
       ;;
@@ -121,6 +121,12 @@ docker_restart() {
   docker_wrapper "$message" "$service" "${cmds[@]}"
 }
 
+docker_exec() {
+  message="Exec"
+  service=${1:-}
+  $docker_compose -f $docker_dev_yml exec "$service" /bin/bash
+}
+
 docker_remove_dangling_images() {
   echo "------ Removing all dangling images ------"
   dangling_images=$(docker images -f "dangling=true" -q)
@@ -158,6 +164,11 @@ action_stop() {
 action_restart() {
   change_context_dir
   docker_restart $command_service
+}
+
+action_exec() {
+  change_context_dir
+  docker_exec $command_service
 }
 
 action_ps() {
@@ -200,6 +211,9 @@ case "$command_action" in
   "build")
     action_build
     ;;
+  "exec")
+    action_exec
+    ;;
   "logs")
     action_logs
     ;;
@@ -211,6 +225,11 @@ case "$command_action" in
     ;;
   "destroy")
     action_destroy
+    ;;
+  "test")
+    action_destroy
+    action_build
+    action_start
     ;;
   *)
     echo "Unknown action: $command_action"
