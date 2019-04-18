@@ -4,11 +4,19 @@
 
 - Laravel 5.8.3
 
-## Completed
+## TO DO List
 
 - [x] Init Laravel
 - [x] Init Docker development environment
-- [] Create base directory structure
+- [ ] Create base directory structure
+- [ ] Implement SSR Sign In | Sign Up | Sign Out + Unit Test
+- [ ] Implement SPA Sign In | Sign Up | Sign Out + Unit Test
+- [ ] Implement user's role base authorization + Unit Test
+- [ ] Implement upload file + Unit Test
+- [ ] Implement resize/rotate/crop image + Unit Test
+- [ ] Implement read/write CSV + Unit Test
+- [ ] Implement read/write Excel + Unit Test
+- [ ] Implement Logger + Unit Test
 
 ## Prerequisites
 
