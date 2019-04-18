@@ -31,7 +31,7 @@ $ ./docker.sh start
 
 - For re-build docker images and re-create containers
 ```terminal
-$ ./docker.sh test
+$ ./docker.sh test-build
 ```
 - Attach to a running container
 ```terminal
@@ -48,7 +48,7 @@ $ ./docker.sh exec php
 ### List coding standard rules
 $ vendor/bin/phpcs -i
 ### Run phpcs check
-$ vendor/bin/phpcs --standard=SunOs app/ --encoding=utf-8
+$ vendor/bin/phpcs --standard=SunOs . --encoding=utf-8
 ```
 - Javascript code
 ```terminal

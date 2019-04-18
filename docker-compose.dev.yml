@@ -16,6 +16,17 @@ services:
     networks:
       - sunos
 
+  node:
+    build:
+      context: .envs/dev
+      dockerfile: node/Dockerfile
+    image: sunos-node:dev
+    volumes:
+      - .:/var/www/app
+    working_dir: /var/www/app
+    networks:
+      - sunos
+
   cert:
     build:
       context: .envs/dev

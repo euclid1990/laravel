@@ -5,7 +5,7 @@ set -o pipefail
 
 if [ -z "${1-}" ]; then
   echo "Please input {action} to execute command"
-  echo "Example: [start|stop|restart|build|exec|logs|ps|clean|destroy|test]"
+  echo "Example: [start|stop|restart|build|exec|logs|ps|clean|destroy|test-build]"
   echo "Usage: $ docker.sh {action}"
   exit;
 else
@@ -226,7 +226,7 @@ case "$command_action" in
   "destroy")
     action_destroy
     ;;
-  "test")
+  "test-build")
     action_destroy
     action_build
     action_start
