@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<ruleset name="SunOS">
+ <description>The Coding Standard package for Code Sniffer.</description>
+ <arg name="tab-width" value="4"/>
+
+ <rule ref="PSR2"/>
+ <rule ref="Squiz.WhiteSpace.CastSpacing"/>
+ <rule ref="Squiz.WhiteSpace.ControlStructureSpacing">
+   <exclude name="Squiz.WhiteSpace.ControlStructureSpacing.LineAfterClose"/>
+ </rule>
+ <rule ref="Squiz.WhiteSpace.FunctionOpeningBraceSpace"/>
+ <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing"/>
+ <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing"/>
+
+ <rule ref="Generic.Files.LineLength">
+  <properties>
+   <property name="lineLimit" value="500"/>
+   <property name="absoluteLineLimit" value="1000"/>
+  </properties>
+ </rule>
+
+ <rule ref="./Sniffs/Arrays/ArrayDeclarationSniff.php"/>
+ <rule ref="./Sniffs/Strings/DoubleQuoteUsageSniff.php"/>
+ <rule ref="./Sniffs/Variables/ValidVariableNameSniff.php"/>
+</ruleset>

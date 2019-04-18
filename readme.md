@@ -30,6 +30,25 @@ $ ./docker.sh start
 
 ## Linting
 
+- PHPCS
+
+```terminal
+$ composer install
+$ ./docker.sh build
+```
+
+- Check List Standard
+
+```terminal
+$ /usr/bin/phpcs -i
+```
+
+- Run Phpcs check
+
+```terminal
+$ vendor/bin/phpcs --standard=SunOs /path/to/file/need/check
+```
+
 ## Contribute
 
 - Fork the repository and make changes on your fork in a feature branch.
