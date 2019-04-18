@@ -6,7 +6,7 @@
 standardPath=vendor/squizlabs/php_codesniffer/src/Standards/SunOS
 
 if [ ! -d "$standardPath" ]; then
-  cp -i -r .envs/dev/php_cs/SunOS/ $standardPath
+  cp -i -r .envs/dev/phpcs/SunOS/ $standardPath
 fi
 
 php-fpm
