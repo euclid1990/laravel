@@ -4,4 +4,4 @@ yarn install
 
 yarn run dev
 
-node
+sleep infinity

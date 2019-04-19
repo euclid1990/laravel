@@ -1,9 +1,11 @@
 FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV USERID=1001 GROUPID=1001
 
 # Install os packages
 RUN apt-get update && apt-get install -y \
+    sudo \
     openssl \
     apache2-utils \
     --no-install-recommends apt-utils \
@@ -18,5 +20,15 @@ COPY cert/*.sh /scripts/
 RUN chmod a+x /scripts/*.sh
 
 RUN mkdir /files
+
+# Create new username: cert
+RUN useradd -ms /bin/bash cert
+# Modify cert user_id:group_id to current host_user_id:host_group_id
+RUN usermod -u $USERID cert
+RUN groupmod -g $GROUPID cert
+# Change owner of /files directory to user cert 
+RUN chown -R cert:cert /files
+# Set user to running image
+USER cert
 
 CMD ["/scripts/command.sh", "localhost"]
