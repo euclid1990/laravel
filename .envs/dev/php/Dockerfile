@@ -1,9 +1,11 @@
 FROM php:7.2.17-fpm-stretch
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV USERID=1001 GROUPID=1001
 
 # Install os packages
 RUN apt-get update && apt-get install -y \
+    sudo \
     g++ \
     zip \
     vim \
@@ -51,19 +53,32 @@ RUN docker-php-ext-install \
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Change user ID to avoid 403 Forbiden error
-RUN usermod -u 1000 www-data
+# Make composer global
+RUN sudo chmod 755 /usr/local/bin/composer
 
 WORKDIR /var/www/app
 
 COPY php/php.ini /usr/local/etc/php/php.ini
+
+COPY php/php-fpm.conf /usr/local/etc/php-fpm.conf
+
+COPY php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
 COPY php/*.sh /scripts/
 
 COPY common/wait-for-it.sh /scripts/
 
 RUN chmod a+x /scripts/*.sh
+
+# Create new username: php-fpm
+RUN useradd -ms /bin/bash php-fpm
+# Modify php-fpm user_id:group_id to current host_user_id:host_group_id
+RUN usermod -u $USERID php-fpm
+RUN groupmod -g $GROUPID php-fpm
+# Make php-fpm user can sudo without password
+RUN sudo echo "php-fpm ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/php-fpm
+# Set user to running image
+USER php-fpm
 
 EXPOSE 9000
 
