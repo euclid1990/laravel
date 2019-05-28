@@ -3,6 +3,7 @@
 namespace App\Exceptions\Api;
 
 use Exception;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class ApiException extends Exception
 {
@@ -19,11 +20,11 @@ abstract class ApiException extends Exception
     public function __construct(string $description = null, int $statusCode = null, array $data = [])
     {
         if (!$statusCode || !is_numeric($statusCode)) {
-            $statusCode = 400;
+            $statusCode = Response::HTTP_BAD_REQUEST;
         }
 
         if (!$description) {
-            $description = trans('http_message.' . $statusCode);
+            $description = __('http_message.' . $statusCode);
         }
 
         $this->data = $data;
