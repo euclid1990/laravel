@@ -28,15 +28,19 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'navbar',
 
   components: {
   },
 
-  data: () => ({
-    isLogin: false
-  }),
+  computed: {
+    ...mapState('Global', [
+      'isLogin',
+    ]),
+  }
 }
 </script>
 

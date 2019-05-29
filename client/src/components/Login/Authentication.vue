@@ -55,8 +55,13 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import RedirectIfAuthenticated from '@/mixins/RedirectIfAuthenticated'
+
 export default {
   name: 'Authentication',
+
+  mixins: [RedirectIfAuthenticated],
 
   data: () => ({
     email: '',
@@ -66,6 +71,10 @@ export default {
   }),
 
   methods: {
+    ...mapActions('Global', [
+      'dispatchLogin',
+    ]),
+
     validateFormData() {
       this.errorMessage = null
       this.$validator.validateAll().then(result => {
@@ -85,13 +94,16 @@ export default {
         password: this.password,
       }
 
-      this.$router.push('/dashboard')
+      this.dispatchLogin(data)
+        .then(() => {
+          this.error = false
+          this.__redirect()
+        })
     },
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import '~@/assets/scss/app';
 

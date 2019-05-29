@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import store from '@/store'
 
 Vue.use(Router)
 
@@ -15,16 +16,19 @@ const router = new Router({
       path: '/',
       name: 'default',
       component: DefaultPage,
+      meta: { globalAccess: true },
     },
     {
       path: '/login',
       name: 'login',
       component: LoginPage,
+      meta: { globalAccess: true },
     },
     {
       path: '/register',
       name: 'register',
       component: RegisterPage,
+      meta: { globalAccess: true },
     },
     {
       path: '/dashboard',
@@ -32,6 +36,16 @@ const router = new Router({
       component: DashboardPage,
     },
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  const requireAuth = to.matched.some(route => !route.meta.globalAccess)
+  const { isLogin } = store.state.Global
+  if (!requireAuth || isLogin) {
+    return next()
+  }
+
+  return next("/login")
 })
 
 export default router

@@ -8,12 +8,19 @@
 
 <script>
 import Authentication from '@/components/Login/Authentication'
+import RedirectIfAuthenticated from '@/mixins/RedirectIfAuthenticated'
 
 export default {
   name: 'LoginPage',
   components: {
     Authentication,
-  }
+  },
+
+  mixins: [RedirectIfAuthenticated],
+
+  created() {
+    this.__protectRoute()
+  },
 }
 </script>
 

@@ -85,8 +85,12 @@
 </template>
 
 <script>
+import RedirectIfAuthenticated from '@/mixins/RedirectIfAuthenticated'
+
 export default {
   name: 'Registeration',
+
+  mixins: [RedirectIfAuthenticated],
 
   data: () => ({
     name: '',
