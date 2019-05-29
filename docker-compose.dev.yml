@@ -27,6 +27,19 @@ services:
     networks:
       - sunos
 
+  client:
+    build:
+      context: .envs/dev
+      dockerfile: client/Dockerfile
+    image: sunos-client:dev
+    volumes:
+      - .:/var/www/app
+    working_dir: /var/www/app/client
+    ports:
+      - "3030:8080"
+    networks:
+      - sunos
+
   cert:
     build:
       context: .envs/dev

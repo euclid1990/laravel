@@ -35,6 +35,15 @@ $ ./docker.sh start
 - Web: https://localhost:8443 `[Basic Authenticate] user:web password:123456`
 - PhpMyAdmin: https://localhost:8444
 
+#### Client
+- Serving client
+```
+$ ./docker.sh exec client bash
+$ npm run serve
+```
+
+- Access: http://localhost:3030
+
 ## Build
 
 - For re-build docker images and re-create containers
