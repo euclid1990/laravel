@@ -1,6 +1,8 @@
 FROM node:10.15.3-stretch
 
-COPY node/*.sh /scripts/
+WORKDIR /var/www/app/client
+
+COPY client/*.sh /scripts/
 
 RUN chmod a+x /scripts/*.sh
 

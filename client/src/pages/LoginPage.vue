@@ -1,0 +1,22 @@
+<template>
+  <div>
+    <div class="row">
+      <authentication></authentication>
+    </div>
+  </div>
+</template>
+
+<script>
+import Authentication from '@/components/Login/Authentication'
+
+export default {
+  name: 'LoginPage',
+  components: {
+    Authentication,
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+</style>
