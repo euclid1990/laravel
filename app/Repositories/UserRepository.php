@@ -10,4 +10,18 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
     {
         parent::__construct($model);
     }
+
+    public function getUserByToken($token)
+    {
+        return $this->model
+            ->resetPasswordToken($token)
+            ->first();
+    }
+
+    public function getUserByEmail($email)
+    {
+        return $this->model
+            ->where('email', $email)
+            ->first();
+    }
 }

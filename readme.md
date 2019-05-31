@@ -38,6 +38,7 @@ $ ./docker.sh start
 
 - Web: https://localhost:8443 `[Basic Authenticate] user:web password:123456`
 - PhpMyAdmin: https://localhost:8444
+- API Documents: https://localhost:8445
 
 ## Build
 
