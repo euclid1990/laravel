@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::resource('user', 'Web\UserController');
-
-Auth::routes();
+Route::group(['middleware' => 'permission:update-user'], function () {
+    Route::resource('user', 'Web\UserController');
+});
