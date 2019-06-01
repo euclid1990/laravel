@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/euclid1990/laravel.svg?style=svg&circle-token=9b60b9bc13cffa647fa4ed7b4e70c07b0b7cba34)](https://circleci.com/gh/euclid1990/laravel)
+
 # Laravel
 
 ## Stack
@@ -9,6 +11,7 @@
 - [x] Init Laravel
 - [x] Init Docker development environment
 - [x] Create base directory structure
+- [x] Continuous Integration configuration (~~Circle CI~~, Sun CI)
 - [ ] Implement SSR Sign In | Sign Up | Sign Out + Unit Test
 - [ ] Implement SPA Sign In | Sign Up | Sign Out + Unit Test
 - [x] Implement user's role base authorization + Unit Test
@@ -56,7 +59,7 @@ $ ./docker.sh exec php
 ### List coding standard rules
 $ vendor/bin/phpcs -i
 ### Run phpcs check
-$ vendor/bin/phpcs --standard=SunOs . --encoding=utf-8
+$ vendor/bin/phpcs --standard=SunOS . --encoding=utf-8
 ```
 - Javascript code
 ```terminal
@@ -69,6 +72,6 @@ $ TBD
 - Commit messages must start with a capitalized and short summary.
 - After every commit, make sure the test suite passes.
 - Contributor sends pull request to release/develop branch, ask another contributor to check if possible.
-- Don't push logs or any unnecessary files to git repository
+- Don't push private keys, logs or any unnecessary files to git repository
 - Merge when pull request got 2 OK from contributors and CI build is green.
 - Merge develop to master to release final version.

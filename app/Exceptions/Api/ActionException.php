@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Exceptions\Api;
+
 use Symfony\Component\HttpFoundation\Response;
 
 class ActionException extends ApiException

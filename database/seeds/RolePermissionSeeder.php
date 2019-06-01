@@ -15,7 +15,7 @@ class RolePermissionSeeder extends Seeder
     public function run()
     {
         $permission = $role = [];
-        
+
         foreach (config('permission.permission') as $value) {
             foreach ($value as $v) {
                 $permission[] = ['name' => $v];
@@ -33,8 +33,8 @@ class RolePermissionSeeder extends Seeder
             foreach ($value as $v) {
                 $role->assignPermission(config('permission.permission.' . $v));
             }
-            
         }
+
         $users = User::get();
         foreach ($users as $key => $user) {
             $user->assignRole(Role::all()->random());

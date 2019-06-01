@@ -1,0 +1,98 @@
+version: 2.1
+
+defaults: &defaults
+  working_directory: ~/project
+
+commands:
+  frontend_cache:
+    description: "[Frontend caching dependencies]"
+    steps:
+      - run: pwd
+      - run: ls -la
+      - restore_cache:
+          key: frontend-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: "Install node modules"
+          command: yarn install
+      - save_cache:
+          key: frontend-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ./node_modules
+  backend_cache:
+    description: "[Frontend caching dependencies]"
+    steps:
+      - restore_cache:
+          key: backend-cache-{{ checksum "composer.lock" }}
+      - run:
+          name: "Install composer vendors"
+          command: composer install
+      - save_cache:
+          key: backend-cache-{{ checksum "composer.lock" }}
+          paths:
+            - ./vendor
+
+jobs:
+  prepare:
+    <<: *defaults
+    docker:
+      - image: circleci/node:10.16.0-stretch
+      - image: euclid1990/laravel-ci-image:circleci
+    steps:
+      - checkout
+
+  frontend:
+    <<: *defaults
+    docker:
+      - image: circleci/node:10.16.0-stretch
+    steps:
+      - checkout
+      - frontend_cache
+      - run:
+          name: "Check coding convention"
+          command: yarn
+      - run:
+          name: "Run unit test cases"
+          command: yarn
+
+  backend:
+    <<: *defaults
+    docker:
+      - image: euclid1990/laravel-ci-image:circleci
+      - image: circleci/mysql:5.7.26
+        environment:
+          MYSQL_ROOT_PASSWORD: ms_root
+          MYSQL_DATABASE: ms_database
+          MYSQL_USER: ms_user
+          MYSQL_PASSWORD: ms_password
+    steps:
+      - checkout
+      - backend_cache
+      - run:
+          name: "Run artisan configuration"
+          command: /scripts/command.sh
+      - run:
+          name: "Ping MySQL connection"
+          command: /scripts/wait-for-it.sh 127.0.0.1:3306 --timeout=120
+      - run:
+          name: "Check coding convention"
+          command: php vendor/bin/phpcs --standard=SunOS . --encoding=utf-8
+      - run:
+          name: "Run unit test cases"
+          command: php vendor/bin/phpunit
+          no_output_timeout: 30m
+
+workflows:
+  version: 2
+  untagged-build:
+    jobs:
+      - prepare:
+          filters:
+            branches:
+              only:
+                - master
+      - frontend:
+          requires:
+            - prepare
+      - backend:
+          requires:
+            - prepare
