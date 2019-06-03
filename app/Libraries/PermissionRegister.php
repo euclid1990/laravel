@@ -26,7 +26,7 @@ class PermissionRegister
      *
      * @return bool
      */
-    public function registerPermissions(): bool
+    public function registerPermissions()
     {
         $this->gate->before(function (User $user, string $ability) {
             try {
@@ -36,7 +36,5 @@ class PermissionRegister
             } catch (PermissionDoesNotExist $e) {
             }
         });
-
-        return true;
     }
 }

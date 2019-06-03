@@ -22,8 +22,6 @@ class RepositoryServiceProvider
      */
     public function bind()
     {
-        $this->app->singleton(UserRepository::class);
-        $this->app->alias(UserRepository::class, UserRepositoryInterface::class);
-        $this->app->alias(UserRepositoryInterface::class, 'users');
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 }

@@ -74,8 +74,14 @@ jobs:
           name: "Run artisan configuration"
           command: /scripts/command.sh
       - run:
+          name: "Replace MySQL connection host"
+          command: sed 's/DB_HOST=mysql/DB_HOST=127.0.0.1/g' .env
+      - run:
           name: "Ping MySQL connection"
           command: /scripts/wait-for-it.sh 127.0.0.1:3306 --timeout=120
+      - run:
+          name: "Migrate database"
+          command: php artisan migrate
       - run:
           name: "Check coding convention"
           command: php vendor/bin/phpcs --standard=SunOS . --encoding=utf-8
