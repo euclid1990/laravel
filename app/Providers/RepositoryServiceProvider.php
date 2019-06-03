@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use App\Models\User;
-use App\Repo\UserRepository;
-use App\Repo\UserRepositoryInterface;
+use App\Repositories\UserRepository;
+use App\Repositories\UserRepositoryInterface;
 
 class RepositoryServiceProvider
 {
