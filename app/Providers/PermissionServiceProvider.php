@@ -49,15 +49,6 @@ class PermissionServiceProvider extends ServiceProvider
                 return '<?php endif; ?>';
             });
 
-            $bladeCompiler->directive('hasanyrole', function ($arguments) {
-                list($roles) = explode(',', $arguments.',');
-
-                return "<?php if(auth()->check() && auth()->user()->hasAnyRole({$roles})): ?>";
-            });
-            $bladeCompiler->directive('endhasanyrole', function () {
-                return '<?php endif; ?>';
-            });
-
             $bladeCompiler->directive('hasallroles', function ($arguments) {
                 list($roles) = explode(',', $arguments.',');
 

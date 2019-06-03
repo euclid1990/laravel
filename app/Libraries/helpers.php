@@ -24,6 +24,36 @@ if (!function_exists('filter')) {
         }
         return $input;
     }
+    /**
+     * Check An array is number array
+     *
+     * @codeCoverageIgnore
+     * @param  array $array
+     * @return bool
+     */
+    function is_array_number($array): bool
+    {
+        if (is_numeric($array[0])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /**
+     * Check An array is string array
+     *
+     * @codeCoverageIgnore
+     * @param  array $array
+     * @return bool
+     */
+    function is_array_string($array): bool
+    {
+        if (is_string($array[0])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 /**

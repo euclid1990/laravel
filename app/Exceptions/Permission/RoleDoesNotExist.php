@@ -13,6 +13,6 @@ class RoleDoesNotExist
 
     public static function withId(int $roleId)
     {
-        return new InvalidArgumentException(__('exception.there_no_role_name', ['roleId' => $roleId]));
+        return new InvalidArgumentException(__('exception.there_no_role_id', ['roleId' => $roleId]));
     }
 }
