@@ -11,7 +11,7 @@ class CheckEmail implements Rule
         //
     }
 
-    public function passes()
+    public function passes($attribute, $value)
     {
         //
     }

@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/euclid1990/laravel.svg?style=svg&circle-token=9b60b9bc13cffa647fa4ed7b4e70c07b0b7cba34)](https://circleci.com/gh/euclid1990/laravel)
+[![codecov](https://codecov.io/gh/euclid1990/laravel/branch/master/graph/badge.svg?token=YEH69pYmyV)](https://codecov.io/gh/euclid1990/laravel)
 
 # Laravel
 

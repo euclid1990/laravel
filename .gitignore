@@ -12,3 +12,4 @@ yarn-error.log
 .DS_Store
 docker-compose.yml
 public/examples
+reports

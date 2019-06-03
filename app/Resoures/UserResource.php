@@ -12,7 +12,7 @@ class UserResource extends ApiResource
         parent::__construct($resource, $message);
     }
 
-    public function toArray(Request $request)
+    public function toArray($request)
     {
         return $this->{$this->method}();
     }

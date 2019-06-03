@@ -16,7 +16,7 @@ abstract class ApiResource extends JsonResource
         $this->message = $message;
     }
 
-    public function with(Request $request): array
+    public function with($request)
     {
         return [
             'message' => $this->message ? [$this->message] : [],

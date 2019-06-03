@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-interface UserRepositoryInterface extends AppRepositoryInterface
+interface RoleRepositoryInterface extends AppRepositoryInterface
 {
     //
 }

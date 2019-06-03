@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-interface PermissionRepositoryInterface extends PermissionRepositoryInterface
+interface PermissionRepositoryInterface extends AppRepositoryInterface
 {
     
 }

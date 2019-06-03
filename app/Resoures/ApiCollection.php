@@ -18,7 +18,7 @@ abstract class ApiCollection extends ResourceCollection
         parent::__construct($resource);
     }
 
-    public function with(Request $request): array
+    public function with($request)
     {
         return [
             'message' => $this->message ? [$this->message] : [],
