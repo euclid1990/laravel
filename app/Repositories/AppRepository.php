@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repo;
+namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;

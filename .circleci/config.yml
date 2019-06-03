@@ -85,11 +85,7 @@ workflows:
   version: 2
   untagged-build:
     jobs:
-      - prepare:
-          filters:
-            branches:
-              only:
-                - master
+      - prepare
       - frontend:
           requires:
             - prepare
