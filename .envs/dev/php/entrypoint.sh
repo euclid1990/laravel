@@ -19,7 +19,7 @@ fi
 
 vendorOwner=$(stat -c '%U' $vendorDir)
 if [ "$vendorOwer" != "php-fpm" ]; then
-  # Change owner of $vendorDir directory to user php-fpm 
+  # Change owner of $vendorDir directory to user php-fpm
   sudo chown -R php-fpm:php-fpm $vendorDir
 fi
 
@@ -28,5 +28,11 @@ if [ ! -d "$standardPath" ]; then
   # Copy php code sniff to vendor
   cp -i -r .envs/dev/phpcs/SunOS/ $standardPath
 fi
+
+# Discovery new packages and generate manifest
+composer dump-autoload
+
+# Starting Supervisor to start the queue process
+sudo /etc/init.d/supervisor start
 
 exec "$@"

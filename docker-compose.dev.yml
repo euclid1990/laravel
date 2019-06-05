@@ -5,6 +5,10 @@ services:
     build:
       context: .envs/dev
       dockerfile: php/Dockerfile
+      args:
+        TZ: Asia/Tokyo
+        USERID: ${USERID}
+        GROUPID: ${GROUPID}
     image: sunos-php:dev
     restart: on-failure
     volumes:
