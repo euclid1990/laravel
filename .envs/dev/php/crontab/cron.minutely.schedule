@@ -1,0 +1,4 @@
+#!/bin/sh
+
+test -x php /var/www/app/artisan || exit 0
+php /var/www/app/artisan schedule:run >> /dev/null 2>&1

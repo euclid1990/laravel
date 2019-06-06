@@ -1,0 +1,15 @@
+/var/www/app/storage/logs/worker.log {
+  daily
+  rotate 30
+  copytruncate
+  missingok
+  notifempty
+  dateext
+  sharedscripts
+  postrotate
+    dir=/var/www/app/storage/logs
+    day=$(date +%Y%m%d)
+    dayNew=$(date +%Y-%m-%d)
+    mv $dir/worker.log-$day $dir/worker-$dayNew.log
+  endscript
+}

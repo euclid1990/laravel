@@ -1,7 +1,13 @@
 FROM php:7.2.17-fpm-stretch
 
+ARG TZ=UTC
+ARG USERID=1001
+ARG GROUPID=1001
 ENV DEBIAN_FRONTEND noninteractive
-ENV USERID=1001 GROUPID=1001
+ENV TZ=${TZ} USERID=${USERID} GROUPID=${GROUPID}
+
+# Change container timezone
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Install os packages
 RUN apt-get update && apt-get install -y \
@@ -10,10 +16,13 @@ RUN apt-get update && apt-get install -y \
     zip \
     vim \
     curl \
+    procps \
     telnet \
     postfix \
     mailutils \
     memcached \
+    logrotate \
+    supervisor \
     libpq-dev \
     libmemcached-dev \
     libjpeg-dev \
@@ -64,6 +73,16 @@ COPY php/php-fpm.conf /usr/local/etc/php-fpm.conf
 
 COPY php/www.conf /usr/local/etc/php-fpm.d/www.conf
 
+COPY php/php-worker /etc/logrotate.d/php-worker
+
+COPY php/crontab/cron.minutely.schedule /etc/cron.minutely/schedule
+
+COPY php/crontab/cron.daily.logrotate /etc/cron.daily/logrotate
+
+COPY php/crontab/crontab /etc/crontab
+
+COPY php/php-worker.conf /etc/supervisor/conf.d/php-worker.conf
+
 COPY php/*.sh /scripts/
 
 COPY common/wait-for-it.sh /scripts/
@@ -74,7 +93,7 @@ RUN chmod a+x /scripts/*.sh
 RUN useradd -ms /bin/bash php-fpm
 # Modify php-fpm user_id:group_id to current host_user_id:host_group_id
 RUN usermod -u $USERID php-fpm
-RUN groupmod -g $GROUPID php-fpm
+RUN groupmod -g $GROUPID php-fpm || exit 0
 # Make php-fpm user can sudo without password
 RUN sudo echo "php-fpm ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers.d/php-fpm
 # Set user to running image

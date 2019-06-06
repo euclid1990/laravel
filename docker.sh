@@ -5,7 +5,7 @@ set -o pipefail
 
 if [ -z "${1-}" ]; then
   echo "Please input {action} to execute command"
-  echo "Example: [start|stop|restart|build|exec|logs|ps|clean|destroy|test-build]"
+  echo "Example: [start|stop|restart|build|config|exec|logs|ps|clean|destroy|test-build]"
   echo "Usage: $ docker.sh {action}"
   exit;
 else
@@ -25,6 +25,8 @@ echo "UTC Time: $(TZ=UTC date '+%Y-%m-%d %H:%M:%S')"
 echo "VN Time: $(TZ=Asia/Bangkok date '+%Y-%m-%d %H:%M:%S')"
 echo "JST Time: $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M:%S')"
 
+export USERID=$(id -u)
+export GROUPID=$(id -g)
 command_action=${1-}
 command_service=${2-}
 docker_compose="/usr/local/bin/docker-compose"
@@ -90,6 +92,13 @@ docker_build() {
   message="Re-build"
   service=${1:-}
   cmds=("$docker_compose -f $docker_dev_yml build --force-rm")
+  docker_wrapper "$message" "$service" "${cmds[@]}"
+}
+
+docker_config() {
+  message="Validate"
+  service=${1:-}
+  cmds=("$docker_compose -f $docker_dev_yml config")
   docker_wrapper "$message" "$service" "${cmds[@]}"
 }
 
@@ -176,6 +185,11 @@ action_ps() {
   docker_ps $command_service
 }
 
+action_config() {
+  change_context_dir
+  docker_config
+}
+
 action_build() {
   change_context_dir
   docker_build
@@ -210,6 +224,9 @@ case "$command_action" in
     ;;
   "build")
     action_build
+    ;;
+  "config")
+    action_config
     ;;
   "exec")
     action_exec
