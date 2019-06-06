@@ -10,6 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group(['middleware' => 'permission:update-user'], function () {
-    Route::resource('user', 'Web\UserController');
-});
+// Route::group(['middleware' => 'permission:update-user'], function () {
+//     Route::resource('user', 'Web\UserController');
+// });
+
+Route::get('/client/{any}', function () {
+    return view('home');
+})->where('any', '.*');
