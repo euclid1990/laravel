@@ -49,3 +49,10 @@ Route::get('cache/{storage}', function (string $storage) {
     $value = Cache::store($storage)->get('foo');
     return $value;
 });
+// Route::group(['middleware' => 'permission:update-user'], function () {
+//     Route::resource('user', 'Web\UserController');
+// });
+
+Route::get('/client/{any}', function () {
+    return view('client');
+})->where('any', '.*');
