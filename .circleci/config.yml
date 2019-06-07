@@ -75,7 +75,7 @@ jobs:
           command: /scripts/command.sh
       - run:
           name: "Replace MySQL connection host"
-          command: sed 's/DB_HOST=mysql/DB_HOST=127.0.0.1/g' .env.dev.example > .env
+          command: sed 's/DB_HOST=mysql/DB_HOST=127.0.0.1/g' .env.dev.example > .env && php artisan key:generate
       - run:
           name: "Ping MySQL connection"
           command: /scripts/wait-for-it.sh 127.0.0.1:3306 --timeout=120
