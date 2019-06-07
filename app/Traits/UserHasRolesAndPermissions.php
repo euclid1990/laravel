@@ -70,10 +70,6 @@ trait UserHasRolesAndPermissions
      */
     public function hasRole($roles): bool
     {
-        if (is_string($roles) && false !== strpos($roles, '|')) {
-            $roles = $this->convertPipeToArray($roles);
-        }
-
         if (is_string($roles)) {
             return $this->roles->contains('name', $roles);
         }
@@ -96,7 +92,7 @@ trait UserHasRolesAndPermissions
             return false;
         }
 
-        if ($roles instanceof \Illuminate\Database\Eloquent\Collection) {
+        if ($roles instanceof \Illuminate\Support\Collection) {
             return $roles->intersect($this->roles)->isNotEmpty();
         }
 
@@ -104,127 +100,117 @@ trait UserHasRolesAndPermissions
     }
 
     /**
-     * Determine if user has all of the given role(s).
+     * Determine if user has all the given role(s).
      *
-     * @param string|\App\Models\Role|\Illuminate\Support\Collection $roles
+     * @param string|int|array|\App\Models\Role|\Illuminate\Support\Collection $roles
      *
      * @return bool
      */
     public function hasAllRoles($roles): bool
     {
-        if (is_string($roles) && false !== strpos($roles, '|')) {
-            $roles = $this->convertPipeToArray($roles);
-        }
-
         if (is_string($roles)) {
             return $this->roles->contains('name', $roles);
+        }
+
+        if (is_int($roles)) {
+            return $this->roles->contains('id', $roles);
         }
 
         if ($roles instanceof Role) {
             return $this->roles->contains('id', $roles->id);
         }
 
-        $roles = collect()->make($roles)->map(function ($role) {
-            return $role instanceof Role ? $role->name : $role;
-        });
-
-        return $roles->intersect($this->roles->pluck('name')) == $roles;
-    }
-
-    /**
-     * Determine if user may perform the given permission.
-     *
-     * @param string|int|\App\Models\Permission $permission
-     *
-     * @return bool
-     */
-    public function hasPermissionTo($permission): bool
-    {
-        $permission = $this->getStoredPermission($permission);
-
-        if (!$permission instanceof Permission) {
-            return false;
-        }
-
-        return $this->hasPermissionViaRole($permission);
-    }
-
-    /**
-     * Determine if user has any of the given permissions.
-     *
-     * @param array ...$permissions
-     *
-     * @return bool
-     */
-    public function hasAnyPermission(...$permissions): bool
-    {
-        if (is_array($permissions[0])) {
-            $permissions = $permissions[0];
-        }
-
-        foreach ($permissions as $permission) {
-            if ($this->hasPermissionTo($permission)) {
-                return true;
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if (!$this->hasAllRoles($role)) {
+                    return false;
+                }
             }
+
+            return true;
+        }
+
+        if ($roles instanceof \Illuminate\Support\Collection) {
+            return $roles->intersect($this->roles)->pluck('id') == $this->roles->pluck('id');
         }
 
         return false;
     }
 
     /**
-     * Determine if user has all of the given permissions.
+     * Determine if user may perform any of the given permission(s).
      *
-     * @param array ...$permissions
+     * @param string|int|\App\Models\Permission $permission
      *
      * @return bool
      */
-    public function hasAllPermissions(...$permissions): bool
+    public function hasPermission($permissions): bool
     {
-        if (is_array($permissions[0])) {
-            $permissions = $permissions[0];
-        }
-
-        foreach ($permissions as $permission) {
-            if (!$this->hasPermissionTo($permission)) {
-                return false;
+        if (is_array($permissions)) {
+            foreach ($permissions as $permission) {
+                if ($this->hasPermission($permission)) {
+                    return true;
+                }
             }
+
+            return false;
         }
 
-        return true;
+        if (is_string($permissions)) {
+            return $this->permissions->contains('name', $permissions);
+        }
+
+        if (is_int($permissions)) {
+            return $this->permissions->contains('id', $permissions);
+        }
+
+        if ($permissions instanceof Permission) {
+            return $this->permissions->contains('id', $permissions->id);
+        }
+
+        if ($permissions instanceof \Illuminate\Support\Collection) {
+            return $permissions->intersect($this->permissions)->isNotEmpty();
+        }
+
+        return false;
     }
 
     /**
-     * Determine if user has the given permission via roles.
+     * Determine if user may perform all of the given permissions.
      *
-     * @param \App\Models\Permission $permission
+     * @param string|int|\App\Models\Permission $permission
      *
      * @return bool
      */
-    public function hasPermissionViaRole(Permission $permission): bool
+    public function hasAllPermissions($permissions): bool
     {
-        return $this->hasRole($permission->roles);
-    }
+        if (is_array($permissions)) {
+            foreach ($permissions as $permission) {
+                if (!$this->hasAllPermissions($permission)) {
+                    return false;
+                }
+            }
 
-    protected function convertPipeToArray(string $pipeString)
-    {
-        $pipeString = trim($pipeString);
-
-        if (strlen($pipeString) <= 2) {
-            return $pipeString;
+            return true;
         }
 
-        $quoteCharacter = substr($pipeString, 0, 1);
-        $endCharacter = substr($quoteCharacter, -1, 1);
-
-        if ($quoteCharacter !== $endCharacter) {
-            return explode('|', $pipeString);
+        if (is_string($permissions)) {
+            return $this->permissions->contains('name', $permissions);
         }
 
-        if (! in_array($quoteCharacter, ["'", '"'])) {
-            return explode('|', $pipeString);
+        if (is_int($permissions)) {
+            return $this->permissions->contains('id', $permissions);
         }
 
-        return explode('|', trim($pipeString, $quoteCharacter));
+        if ($permissions instanceof Permission) {
+            return $this->permissions->contains('id', $permissions->id);
+        }
+
+        if ($permissions instanceof \Illuminate\Support\Collection) {
+            return $permissions->intersect($this->permissions)->pluck('id') == $this->permissions->pluck('id');
+        }
+
+        return false;
     }
 
     /**
@@ -257,7 +243,7 @@ trait UserHasRolesAndPermissions
     {
         $permission = Permission::find($id);
 
-        if (! $permission) {
+        if (!$permission) {
             throw PermissionDoesNotExist::withId($id);
         }
 
@@ -272,7 +258,7 @@ trait UserHasRolesAndPermissions
      * @return \App\Models\Permission
      *
      */
-    public function getStoredPermission($permissions): Permission
+    public function getStoredPermission($permissions)
     {
         if (is_numeric($permissions)) {
             return $this->findPermissionById($permissions);
@@ -282,8 +268,14 @@ trait UserHasRolesAndPermissions
             return $this->findPermissionByName($permissions);
         }
 
-        if (is_array($permissions)) {
-            return Permission::whereIn('name', $permissions)->get();
+        if (is_array($permissions) && !empty($permissions)) {
+            if (is_array_number($permissions)) {
+                return Permission::whereIn('id', $permissions)->get();
+            }
+
+            if (is_array_string($permissions)) {
+                return Permission::whereIn('name', $permissions)->get();
+            }
         }
 
         return $permissions;
@@ -337,7 +329,7 @@ trait UserHasRolesAndPermissions
      * @return \App\Models\Role
      *
      */
-    public function getStoredRole($role): Role
+    public function getStoredRole($role)
     {
         if (is_numeric($role)) {
             return $this->findRoleById($role);

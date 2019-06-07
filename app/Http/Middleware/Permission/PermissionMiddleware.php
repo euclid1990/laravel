@@ -7,20 +7,16 @@ use App\Exceptions\Permission\UnauthorizedException;
 
 class PermissionMiddleware
 {
-    public function handle($request, Closure $next, $permission)
+    public function handle($request, Closure $next, ...$permissions)
     {
         if (app('auth')->guest()) {
             throw UnauthorizedException::notLoggedIn();
         }
 
-        $permissions = is_array($permission) ? $permission : explode('|', $permission);
-
-        foreach ($permissions as $permission) {
-            if (app('auth')->user()->can($permission)) {
-                return $next($request);
-            }
+        if (!auth()->user()->hasPermission($permissions)) {
+            throw UnauthorizedException::forPermissions($permissions);
         }
 
-        throw UnauthorizedException::forPermissions($permissions);
+        return $next($request);
     }
 }

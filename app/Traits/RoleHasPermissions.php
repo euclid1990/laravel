@@ -2,9 +2,9 @@
 
 namespace App\Traits;
 
-use App\Models\Role;
 use App\Models\Permission;
 use App\Exceptions\Permission\PermissionDoesNotExist;
+use Illuminate\Support\Collection;
 
 trait RoleHasPermissions
 {
@@ -51,7 +51,7 @@ trait RoleHasPermissions
     /**
      * Revoke the given permission.
      *
-     * @param \App\Models\Permission|\App\Models\Permission[]|string|string[] $permission
+     * @param \App\Models\Permission|\App\Models\Permission[]|string|string[]|int|int[] $permission
      *
      * @return int
      */
@@ -102,12 +102,12 @@ trait RoleHasPermissions
     /**
      * Find a permission by its name
      *
-     * @param int|string $permission
+     * @param int|string|array $permission
      *
-     * @return \App\Models\Permission
+     * @return \App\Models\Permission|\Illuminate\Support\Collection
      *
      */
-    public function getStoredPermission($permissions): Permission
+    public function getStoredPermission($permissions)
     {
         if (is_numeric($permissions)) {
             return $this->findById($permissions);
@@ -117,8 +117,14 @@ trait RoleHasPermissions
             return $this->findByName($permissions);
         }
 
-        if (is_array($permissions)) {
-            return Permission::whereIn('name', $permissions)->get();
+        if (is_array($permissions) && !empty($permissions)) {
+            if (is_array_number($permissions)) {
+                return Permission::whereIn('id', $permissions)->get();
+            }
+
+            if (is_array_string($permissions)) {
+                return Permission::whereIn('name', $permissions)->get();
+            }
         }
 
         return $permissions;

@@ -58,4 +58,13 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($value);
     }
+    
+    public function getPermissionsAttribute()
+    {
+        if (!$this->relationLoaded('roles') || !$this->roles->first()->relationLoaded('permissions')) {
+            $this->load('roles.permissions');
+        }
+
+        return collect($this->roles->pluck('permissions'))->collapse()->unique();
+    }
 }

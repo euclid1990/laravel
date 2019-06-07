@@ -26,17 +26,15 @@ class PermissionRegister
      *
      * @return bool
      */
-    public function registerPermissions(): bool
+    public function registerPermissions()
     {
         $this->gate->before(function (User $user, string $ability) {
             try {
-                if (method_exists($user, 'hasPermissionTo')) {
-                    return $user->hasPermissionTo($ability) ?: null;
+                if (method_exists($user, 'hasPermission')) {
+                    return $user->hasPermission($ability) ?: null;
                 }
             } catch (PermissionDoesNotExist $e) {
             }
         });
-
-        return true;
     }
 }

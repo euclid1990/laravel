@@ -23,7 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $repoServiceProvider = new RepositoryServiceProvider($this->app);
-        $repoServiceProvider->bind();
+        //
     }
 }

@@ -17,20 +17,10 @@ class UnauthorizedException extends HttpException
         return $exception;
     }
 
-    public static function forPermissions(array $permissions): self
+    public static function forPermissions($permissions): self
     {
         $permStr = implode(', ', $permissions);
         $message = __('exception.not_have_permission', ['permissions' => $permStr]);
-
-        $exception = new static(Response::HTTP_FORBIDDEN, $message, null, []);
-
-        return $exception;
-    }
-
-    public static function forRolesOrPermissions(array $rolesOrPermissions): self
-    {
-        $permStr = implode(', ', $rolesOrPermissions);
-        $message = __('exception.not_have_role_and_permission', ['permissions' => $permStr]);
 
         $exception = new static(Response::HTTP_FORBIDDEN, $message, null, []);
 
