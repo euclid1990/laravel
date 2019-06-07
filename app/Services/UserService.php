@@ -2,27 +2,21 @@
 
 namespace App\Services;
 
-use App\Repo\UserRepositoryInterface;
-use DB;
 use \Carbon\Carbon;
+use App\Repositories\UserRepositoryInterface;
 
-class UserService extends BaseService
+class UserService extends AppService
 {
-    /**
-     * @var \App\Repo\UserRepositoryInterface
-     */
     protected $userRepository;
 
-    /**
-     *
-     * @param \App\Repo\UserRepositoryInterface $userRepository
-     */
     public function __construct(UserRepositoryInterface $userRepository)
     {
+        parent::__construct($userRepository);
+
         $this->userRepository = $userRepository;
     }
 
-    public function paginateList(string $params)
+    public function paginateList($params)
     {
         $params = filter($params, ['keyword']);
         $page = isset($params['page']) ? $params['page'] : config('common.page_default');
@@ -36,18 +30,8 @@ class UserService extends BaseService
         return $this->userRepository->delete($id);
     }
 
-    public function store(array $data)
+    public function getUserByEmail(string $email)
     {
-        return $this->userRepository->store($data);
-    }
-
-    public function findById(int $id)
-    {
-        return $this->userRepository->findById($id);
-    }
-
-    public function update(int $id, array $data)
-    {
-        return $this->userRepository->update($id, $data);
+        return $this->userRepository->getUserByEmail($email);
     }
 }

@@ -25,3 +25,14 @@ if (!function_exists('filter')) {
         return $input;
     }
 }
+
+/**
+ * Generate an HTTP signature.
+ * @param  string $key The resource key.
+ */
+if (!function_exists('generateSignature')) {
+    function generateSignature($key)
+    {
+        return md5(env('FILE_SIGNKEY', '').':'.ltrim($key, '/'));
+    }
+}

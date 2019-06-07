@@ -28,6 +28,8 @@ services:
     volumes:
       - .:/var/www/app
     working_dir: /var/www/app
+    expose:
+      - "4000"
     networks:
       - sunos
 
@@ -55,6 +57,7 @@ services:
       - "8080:80"
       - "8443:443"
       - "8444:444"
+      - "8445:445"
     volumes:
       - ./.envs/dev/nginx/conf.d:/etc/nginx/conf.d
       - ./.envs/dev/nginx/nginx.conf:/etc/nginx/nginx.conf

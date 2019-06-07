@@ -4,6 +4,11 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Response;
+use stdClass;
 
 class Handler extends ExceptionHandler
 {
@@ -46,6 +51,34 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($request->expectsJson()) {
+            if ($exception instanceof AuthenticationException) {
+                return $this->responseException(__('auth.failed'), Response::HTTP_UNAUTHORIZED);
+            }
+
+            if ($exception instanceof ValidationException) {
+                $errors = $exception->validator->errors()->toArray();
+                return $this->responseException(
+                    '',
+                    Response::HTTP_UNPROCESSABLE_ENTITY,
+                    $errors
+                );
+            }
+        }
         return parent::render($request, $exception);
+    }
+
+    protected function responseException($message, $code, $errors = null)
+    {
+        if (is_null($errors)) {
+            $errors = new stdClass();
+        }
+
+        return response()->json([
+            'code' => $code,
+            'data' => null,
+            'message' => $message,
+            'errors' => $errors,
+        ], $code);
     }
 }

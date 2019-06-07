@@ -16,12 +16,12 @@ class UserTableSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'email' => 'admin@example.com',
-                'password' => '123456',
+                'password' => bcrypt(123456),
             ],
             [
                 'name' => 'Member',
                 'email' => 'member@example.com',
-                'password' => '123456',
+                'password' => bcrypt(123456),
             ],
         ];
         User::insert($dump);

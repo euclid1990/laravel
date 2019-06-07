@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
+use Carbon\Carbon;
 use App\Traits\UserHasRolesAndPermissions;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
-    use Notifiable, UserHasRolesAndPermissions;
+    use Notifiable, UserHasRolesAndPermissions, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -50,5 +52,10 @@ class User extends Authenticatable
             'user_id',
             'role_id'
         );
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
     }
 }
