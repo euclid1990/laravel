@@ -20,9 +20,9 @@ RUN apt-get update && apt-get install -y \
     telnet \
     postfix \
     mailutils \
-    memcached \
     logrotate \
     supervisor \
+    sasl2-bin \
     libpq-dev \
     libmemcached-dev \
     libjpeg-dev \
@@ -38,6 +38,12 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libzzip-dev \
     libpcre3-dev \
+    libzip-dev \
+    liblz4-dev \
+    libevent-dev \
+    libsasl2-2 \
+    libsasl2-dev \
+    libsasl2-modules \
     --no-install-recommends apt-utils \
     && rm -r /var/lib/apt/lists/*
 
@@ -47,9 +53,26 @@ RUN docker-php-ext-configure gd \
     --with-jpeg-dir=/usr/lib \
     --with-freetype-dir=/usr/include/freetype2
 
-# Install mongodb, xdebug, memcached, mcrypt
-RUN pecl install mongodb xdebug memcached-3.1.3 mcrypt-1.0.2 \
-    && docker-php-ext-enable mongodb xdebug memcached mcrypt
+# Install mongodb, xdebug, igbinary, msgpack, mcrypt
+RUN pecl install mongodb xdebug memcached-3.1.3 mcrypt-1.0.2 igbinary-3.0.1 msgpack-2.0.3 memcached-3.1.3 \
+    && docker-php-ext-enable mongodb xdebug mcrypt igbinary msgpack
+
+# Install memcached with sasl
+RUN mkdir -p mkdir -p /usr/src/php/ext/memcached \
+    && tar -C /usr/src/php/ext/memcached -zxvf "$(pecl config-get download_dir)/memcached-3.1.3.tgz" --strip 1 \
+    && docker-php-ext-configure memcached \
+    --with-php-config=/usr/local/bin/php-config \
+    --with-libmemcached-dir \
+    --with-zlib-dir \
+    --with-system-fastlz=no \
+    --enable-sasl=yes \
+    --enable-memcached-igbinary=yes \
+    --enable-memcached-msgpack=yes \
+    --enable-memcached-json=yes \
+    --enable-memcached-protocol=no \
+    --enable-memcached-sasl=yes \
+    --enable-memcached-session=yes \
+    && docker-php-ext-install memcached
 
 # Install extensions using the helper script provided by the base image
 RUN docker-php-ext-install \

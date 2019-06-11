@@ -102,6 +102,16 @@ services:
     environment:
       REDIS_PASSWORD: rd_password
 
+  memcached:
+    image: bitnami/memcached:1.5.16
+    ports:
+      - 11211:11211
+    networks:
+      - sunos
+    environment:
+      - MEMCACHED_USERNAME=mem_user
+      - MEMCACHED_PASSWORD=mem_password
+
 networks:
   sunos:
     name: sunos
