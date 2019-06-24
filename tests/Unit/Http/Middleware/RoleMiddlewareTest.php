@@ -9,9 +9,12 @@ use App\Http\Middleware\Permission\RoleMiddleware;
 use App\Models\User;
 use App\Models\Role;
 use App\Exceptions\Permission\UnauthorizedException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RoleMiddlewareTest extends TestCase
 {
+    use DatabaseTransactions;
+
     protected $roleMiddleware;
 
     public function setUp(): void

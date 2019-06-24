@@ -10,9 +10,12 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Exceptions\Permission\UnauthorizedException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PermissionMiddlewareTest extends TestCase
 {
+    use DatabaseTransactions;
+    
     protected $permissionMiddleware;
 
     public function setUp(): void

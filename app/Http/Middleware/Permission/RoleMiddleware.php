@@ -3,18 +3,17 @@
 namespace App\Http\Middleware\Permission;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
 use App\Exceptions\Permission\UnauthorizedException;
 
 class RoleMiddleware
 {
     public function handle($request, Closure $next, ...$roles)
     {
-        if (Auth::guest()) {
+        if (auth()->guest()) {
             throw UnauthorizedException::notLoggedIn();
         }
 
-        if (!Auth::user()->hasRole($roles)) {
+        if (!auth()->user()->hasRole($roles)) {
             throw UnauthorizedException::forRoles($roles);
         }
 

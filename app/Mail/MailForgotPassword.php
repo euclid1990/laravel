@@ -13,16 +13,18 @@ class MailForgotPassword extends Mailable
 
     protected $token;
     protected $user;
+    protected $url;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($user, $token)
+    public function __construct($user, $token, $url = null)
     {
         $this->token = $token;
         $this->user = $user;
+        $this->url = $url;
     }
 
     /**
@@ -35,7 +37,7 @@ class MailForgotPassword extends Mailable
         return $this->to($this->user->email)
             ->view('emails.mail_forgot_password')
             ->with([
-                'url' => url(sprintf(config('api.auth.reset_password.url'), $this->token)),
+                'url' => $this->url ? $this->url : url(sprintf(config('api.auth.reset_password.url'), $this->token)),
                 'name' => $this->user->name,
                 'timeOut' => config('api.auth.reset_password.token_timeout'),
             ]);
