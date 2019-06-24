@@ -9,11 +9,15 @@ use Psr\Http\Message\ServerRequestInterface;
 use App\Mail\MailForgotPassword;
 use Mail;
 use Password;
+use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
+use Illuminate\Validation\ValidationException;
 
 class AuthService extends AppService
 {
     protected $resetPwdRepo;
     protected $userRepository;
+    protected $loginRedirectTo = '/';
 
     public function __construct(
         PasswordResetTokenRepository $resetPwdRepo,
@@ -34,9 +38,9 @@ class AuthService extends AppService
         ]);
     }
 
-    public function queueMailResetPassword($user, $token)
+    public function queueMailResetPassword($user, $token, $url = null)
     {
-        return Mail::queue(new MailForgotPassword($user, $token));
+        return Mail::queue(new MailForgotPassword($user, $token, $url));
     }
 
     public function resetPassword($password, $token)
@@ -60,5 +64,15 @@ class AuthService extends AppService
         $data['client_secret'] = env('API_CLIENT_SECRET');
 
         return app(ServerRequestInterface::class)->withParsedBody($data);
+    }
+
+    public function attempt(Request $request)
+    {
+        return auth()->guard()->attempt($request->only($this->username(), 'password'), $request->filled('remember'));
+    }
+
+    public function username()
+    {
+        return 'email';
     }
 }
