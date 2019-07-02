@@ -1,34 +1,52 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand navbar-light bg-light">
-      <a class="navbar-brand offset-1" href="#">SunOS</a>
-      <div class="collapse navbar-collapse">
-        <div class="navbar-nav col-12 container">
-          <div v-if="isLogin" class="col-12 navbar-container">
-            <button class="btn btn-light">Home</button>
-          </div>
-          <div v-else class="login-section col-xl-3 offset-xl-9 col-md-5 offset-md-7 col-sm-7 offset-sm-5">
-            <button
-              class="btn btn-light login-section__button"
-              v-on:click="$router.push('/client/vue/login')"
-              >
-              Login
-            </button>
-            <button
-              class="btn btn-light login-section__button"
-              v-on:click="$router.push('/client/vue/register')"
-              >
-              Register
-            </button>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <b-navbar toggleable="lg" type="dark" variant="info">
+      <b-navbar-brand href="#">
+        <router-link :to="{name: 'dashboard'}">
+          <img src="https://sun-asterisk.vn/wp-content/uploads/2019/03/Sun-Logotype-RGB-01.png" alt="">
+        </router-link>
+      </b-navbar-brand>
+
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item href="#">
+            <router-link :to="{name: 'dashboard'}">Home <span class="sr-only">(current)</span></router-link>
+          </b-nav-item>
+        </b-navbar-nav>
+
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <b-nav-item-dropdown text="Lang" right>
+            <b-dropdown-item href="#">EN</b-dropdown-item>
+          </b-nav-item-dropdown>
+
+          <b-nav-item-dropdown v-if="isAuthenticated" right>
+            <!-- Using 'button-content' slot -->
+            <template slot="button-content"><em>User</em></template>
+            <b-dropdown-item href="#">
+              <router-link :to="{name: 'profile'}">Profile</router-link>
+            </b-dropdown-item>
+            <b-dropdown-item href="#" @click="logout">
+              Logout
+            </b-dropdown-item>
+          </b-nav-item-dropdown>
+          <fragment v-else right>
+            <b-nav-item href="#"><router-link :to="{name: 'login'}">Login</router-link></b-nav-item>
+            <b-nav-item href="#"><router-link :to="{name: 'register'}">Register</router-link></b-nav-item>
+          </fragment>
+        </b-navbar-nav>
+
+      </b-collapse>
+      
+    </b-navbar>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'navbar',
@@ -37,9 +55,17 @@ export default {
   },
 
   computed: {
-    ...mapState('Global', [
-      'isLogin',
-    ]),
+    ...mapGetters({
+      isAuthenticated: 'auth/check'
+    }),
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('auth/logout')
+        .then(() => {
+          this.$router.push({name: 'dashboard'})
+        })
+    },
   }
 }
 </script>

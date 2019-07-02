@@ -32,6 +32,9 @@ fi
 # Discovery new packages and generate manifest
 composer dump-autoload
 
+# Generate application routes for client
+php artisan laroute:generate
+
 # Starting Supervisor to start the queue process
 sudo /etc/init.d/supervisor start
 

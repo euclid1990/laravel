@@ -55,13 +55,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import RedirectIfAuthenticated from '@/mixins/RedirectIfAuthenticated'
 
 export default {
   name: 'Authentication',
-
-  mixins: [RedirectIfAuthenticated],
 
   data: () => ({
     email: '',
@@ -69,12 +66,8 @@ export default {
     errorMessage: '',
     error: false,
   }),
-
+  mixins: [RedirectIfAuthenticated],
   methods: {
-    ...mapActions('Global', [
-      'dispatchLogin',
-    ]),
-
     validateFormData() {
       this.errorMessage = null
       this.$validator.validateAll().then(result => {
@@ -94,8 +87,8 @@ export default {
         password: this.password,
       }
 
-      this.dispatchLogin(data)
-        .then(() => {
+      this.$store.dispatch('auth/login', data)
+        .then((res) => {
           this.error = false
           this.__redirect()
         })

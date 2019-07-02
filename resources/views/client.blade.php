@@ -12,6 +12,12 @@
     </head>
     <body>
         <div id="app"></div>
+        <script type="text/javascript" charset="utf-8">
+            window.config = {
+                lang: "{{ str_replace('_', '-', app()->getLocale()) }}",
+                csrf_token: "{{ csrf_token() }}"
+            }
+        </script>
     </body>
     <script src="{{ mix('js/manifest.js') }}"></script>
     <script src="{{ mix('js/vendor.js') }}"></script>

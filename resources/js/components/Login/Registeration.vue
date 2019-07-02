@@ -78,12 +78,9 @@
 </template>
 
 <script>
-import RedirectIfAuthenticated from '@/mixins/RedirectIfAuthenticated'
 
 export default {
   name: 'Registeration',
-
-  mixins: [RedirectIfAuthenticated],
 
   data: () => ({
     name: '',
@@ -118,8 +115,11 @@ export default {
         password: this.password,
         password_confirmation: this.password_confirmation,
       }
-
-      this.$router.push('/client/vue/dashboard')
+      this.$store.dispatch('auth/register', data)
+        .then(() => {
+          this.error = false
+          this.$router.push({name: 'dashboard'})
+        })
     },
   }
 }

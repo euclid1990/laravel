@@ -15,17 +15,14 @@ use Illuminate\Http\Request;
 
 Route::group(['namespace' => 'Api', 'prefix' => 'v1', 'as' => 'api.v1.'], function () {
     Route::group(['namespace' => 'Auth'], function () {
-        Route::post('login', 'LoginController@login');
+        Route::post('login', 'LoginController@login')->name('login');
         Route::post('token/refresh', 'LoginController@refreshToken')->name('token.refresh');
-        Route::post('logout', 'LoginController@logout');
-        Route::post('register', 'LoginController@register');
+        Route::post('register', 'LoginController@register')->name('register');
         Route::post('password/email', 'ForgotPasswordController@sendResetTokenEmail')->name('password.reset.email');
         Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset');
-    });
 
-    Route::group(['middleware' => 'auth:api'], function () {
-        Route::get('user/{id}', function ($id) {
-            return \App\Models\User::find($id);
-        });
+        Route::group(['middleware' => ['auth:api']], function () {
+	        Route::post('logout', 'LoginController@logout')->name('logout');
+	    });
     });
 });

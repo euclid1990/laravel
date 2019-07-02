@@ -1,22 +1,22 @@
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   computed: {
-    ...mapState('Global', [
-      'isLogin',
-    ]),
+    ...mapGetters({
+      check: 'auth/check'
+    }),
   },
 
   methods: {
     __protectRoute() {
-      if (this.isLogin) {
+      if (this.check) {
         this.__redirect()
       }
     },
 
     __redirect() {
       const redirect = {
-        'path': '/client/vue/dashboard'
+        'path': this.$router.resolve({name: 'dashboard'}).href
       }
 
       this.$router.push(redirect)
