@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::group(['namespace' => 'Web'], function () {
     Route::get('/', 'HomeController@index')->name('home');
 
@@ -49,3 +50,7 @@ Route::get('cache/{storage}', function (string $storage) {
     $value = Cache::store($storage)->get('foo');
     return $value;
 });
+
+Route::get('/client/{any}', function () {
+    return view('client');
+})->where('any', '.*');

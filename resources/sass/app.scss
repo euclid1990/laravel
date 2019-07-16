@@ -4,9 +4,11 @@
 
 // Variables
 @import 'variables';
+@import 'mixins';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-vue/src/index.scss';
 
 .navbar-laravel {
   background-color: #fff;

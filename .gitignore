@@ -1,9 +1,12 @@
 /node_modules
 /public/hot
 /public/storage
+/public/mix-manifest.json
 /storage/*.key
+/resources/js/endpoint.js
 /vendor
 .env
+.phpintel
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -14,3 +17,4 @@ docker-compose.yml
 public/examples
 reports
 composer.lock
+package-lock.json

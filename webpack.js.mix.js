@@ -1,5 +1,8 @@
-const mix = require('laravel-mix');
+const mix = require('laravel-mix')
+const path = require('path')
+const mergeManifest = require('./mergeManifest')
 
+mix.extend('mergeManifest', mergeManifest)
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,5 +14,21 @@ const mix = require('laravel-mix');
  |
  */
 
+mix.webpackConfig({
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'resources/js'),
+      'sass': path.resolve(__dirname, 'resources/sass'),
+    },
+  }
+})
+
 mix.js('resources/js/app.js', 'public/js')
-   .sass('resources/sass/app.scss', 'public/css');
+  .extract()
+  .mergeManifest();
+
+if (mix.inProduction()) {
+  mix.version()
+} else {
+  mix.sourceMaps()
+}
