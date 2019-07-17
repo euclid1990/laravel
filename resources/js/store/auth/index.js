@@ -1,7 +1,7 @@
 import request from '@/utils/api'
 import Cookies from 'js-cookie'
 import * as types from '@/store/auth/mutation-types'
-import { route, url } from '@/utils/route'
+import { route } from '@/utils/route'
 
 const namespaced = true
 
@@ -23,7 +23,7 @@ const getters = {
 
 // mutations
 const mutations = {
-  [types.LOGIN_SUCCESS](state, {data}) {
+  [types.LOGIN_SUCCESS](state, { data }) {
     state.access_token = data.access_token
     state.refresh_token = data.refresh_token
     Cookies.set('access_token', data.access_token, { expires: data.expires_in ? data.expires_in : null })
@@ -32,7 +32,7 @@ const mutations = {
 
   [types.LOGIN_FAILURE](state) {
     Cookies.remove('access_token')
-    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('refresh_token')
   },
 
   [types.LOGOUT](state) {
@@ -40,7 +40,7 @@ const mutations = {
     state.access_token = null
     state.refresh_token = null
     Cookies.remove('access_token')
-    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('refresh_token')
   },
 
   [types.FETCH_USER](state, { user }) {
@@ -56,7 +56,7 @@ const mutations = {
 const actions = {
   async login({ commit }, payload) {
     try {
-      const data = await request.post({url: route('login'), data: payload});
+      const data = await request.post({ url: route('login'), data: payload })
 
       commit(types.LOGIN_SUCCESS, data)
     } catch (e) {
@@ -66,7 +66,7 @@ const actions = {
 
   async logout({ commit }) {
     try {
-      await request.post({url: route('logout')})
+      await request.post({ url: route('logout') })
     } catch (e) {}
 
     commit(types.LOGOUT)
@@ -74,15 +74,15 @@ const actions = {
 
   async fetchUserProfile({ commit }) {
     try {
-      const data = await request.get({url: route('profile')});
-      commit(types.FETCH_USER, { user : data })
-        
+      const data = await request.get({ url: route('profile') })
+
+      commit(types.FETCH_USER, { user: data })
     } catch (e) {}
   },
 
   async refreshToken({ commit }, payload) {
     try {
-      const { data } = await request.post({url: route('token.refresh'), data: payload})
+      const { data } = await request.post({ url: route('token.refresh'), data: payload })
 
       commit(types.UPDATE_TOKEN, { token: data.token })
     } catch (e) {
@@ -92,7 +92,7 @@ const actions = {
 
   async register({ commit }, payload) {
     try {
-      const data = await request.post({url: route('register'), data: payload})
+      const data = await request.post({ url: route('register'), data: payload })
 
       commit(types.LOGIN_SUCCESS, data)
     } catch (e) {
@@ -102,18 +102,17 @@ const actions = {
 
   async passwordResetEmail({ commit }, payload) {
     try {
-      const { data } = await request.post({url: route('password.reset.email'), data: payload})
+      const { data } = await request.post({ url: route('password.reset.email'), data: payload })
     } catch (e) {
-        
+
     }
   },
 
   async resetPassword({ commit }, payload) {
     try {
-      const { data } = await request.post({url: route('password.reset'), data: payload})
-        
+      const { data } = await request.post({ url: route('password.reset'), data: payload })
     } catch (e) {
-        
+
     }
   }
 }

@@ -2,77 +2,101 @@
   <div class="auth-panel col-12">
     <div class="auth-panel__wrapper col-xl-6 col-md-8 col-10">
       <div class="auth-panel__wrapper__header col-6__header">
-        <div class="col-1">Register</div>
+        <div class="col-1">
+          Register
+        </div>
       </div>
       <div>
-        <form class="form container" @submit.prevent="validateFormData">
-          <div v-if="error" class="alert alert-danger col-sm-10 offset-sm-1 error">{{ errorMessage }}</div>
+        <form
+          class="form container"
+          @submit.prevent="validateFormData"
+        >
+          <div
+            v-if="error"
+            class="alert alert-danger col-sm-10 offset-sm-1 error"
+          >
+            {{ errorMessage }}
+          </div>
           <div class="form-group row form-row">
-            <label for="name" class="col-4 col-form-label">Name</label>
+            <label
+              for="name"
+              class="col-4 col-form-label"
+            >Name</label>
             <div class="col-6">
               <input
+                id="name"
+                v-model="name"
+                v-validate="'required'"
                 type="text"
                 class="form-control"
-                id="name"
                 name="name"
-                v-model="name"
                 placeholder="Name"
-                v-validate="'required'"
-                />
+              >
             </div>
           </div>
           <div class="form-group row form-row">
-            <label for="email" class="col-4 col-form-label">E-Mail Address</label>
+            <label
+              for="email"
+              class="col-4 col-form-label"
+            >E-Mail Address</label>
             <div class="col-6">
               <input
+                id="email"
+                v-model="email"
+                v-validate="'required|email'"
                 type="email"
                 class="form-control"
-                id="email"
                 name="email"
-                v-model="email"
                 placeholder="E-Mail Address"
-                v-validate="'required|email'"
-                />
+              >
             </div>
           </div>
           <div class="form-group row form-row">
-            <label for="password" class="col-4 col-form-label">Password</label>
+            <label
+              for="password"
+              class="col-4 col-form-label"
+            >Password</label>
             <div class="col-6">
               <input
-                type="password"
-                class="form-control"
                 id="password"
-                name="password"
-                placeholder="Password"
+                ref="password"
                 v-model="password"
                 v-validate="'required|min:6'"
-                ref="password"
-                />
+                type="password"
+                class="form-control"
+                name="password"
+                placeholder="Password"
+              >
             </div>
           </div>
           <div class="form-group row form-row">
-            <label for="password" class="col-4 col-form-label">Confirm Password</label>
+            <label
+              for="password"
+              class="col-4 col-form-label"
+            >Confirm Password</label>
             <div class="col-6">
               <input
-                type="password"
-                class="form-control"
                 id="password-confirmation"
-                name="password_confirmation"
-                placeholder="Password confirm"
                 v-model="password_confirmation"
                 v-validate="'required|min:6|confirmed:password'"
+                type="password"
+                class="form-control"
+                name="password_confirmation"
+                placeholder="Password confirm"
                 data-vv-as="password"
-                />
+              >
             </div>
           </div>
           <div class="form-row">
             <div class="offset-4">
-              <button class="btn btn-primary">Register</button>
+              <button class="btn btn-primary">
+                Register
+              </button>
             </div>
           </div>
         </form>
       </div>
-      <div class="footer"></div>
+      <div class="footer" />
     </div>
   </div>
 </template>
@@ -88,7 +112,7 @@ export default {
     password: '',
     password_confirmation: '',
     errorMessage: '',
-    error: false,
+    error: false
   }),
 
   methods: {
@@ -113,14 +137,14 @@ export default {
         name: this.name,
         email: this.email,
         password: this.password,
-        password_confirmation: this.password_confirmation,
+        password_confirmation: this.password_confirmation
       }
       this.$store.dispatch('auth/register', data)
         .then(() => {
           this.error = false
-          this.$router.push({name: 'dashboard'})
+          this.$router.push({ name: 'dashboard' })
         })
-    },
+    }
   }
 }
 </script>

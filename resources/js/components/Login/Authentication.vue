@@ -2,54 +2,81 @@
   <div class="auth-panel col-12">
     <div class="auth-panel__wrapper col-xl-6 col-md-8 col-10">
       <div class="auth-panel__wrapper__header col-6__header">
-        <div class="col-1">Login</div>
+        <div class="col-1">
+          Login
+        </div>
       </div>
       <div>
-        <form class="form container" @submit.prevent="validateFormData">
-          <div v-if="error" class="alert alert-danger col-sm-10 offset-sm-1 error">{{ errorMessage }}</div>
+        <form
+          class="form container"
+          @submit.prevent="validateFormData"
+        >
+          <div
+            v-if="error"
+            class="alert alert-danger col-sm-10 offset-sm-1 error"
+          >
+            {{ errorMessage }}
+          </div>
           <div class="form-group row form-row">
-            <label for="email" class="col-4 col-form-label">E-Mail Address</label>
+            <label
+              for="email"
+              class="col-4 col-form-label"
+            >E-Mail Address</label>
             <div class="col-6">
               <input
+                id="email"
+                v-model="email"
+                v-validate="'required|email'"
                 type="email"
                 class="form-control"
-                id="email"
                 name="email"
-                v-model="email"
                 placeholder="E-Mail Address"
-                v-validate="'required|email'"
-                />
+              >
             </div>
           </div>
           <div class="form-group row form-row">
-            <label for="password" class="col-4 col-form-label">Password</label>
+            <label
+              for="password"
+              class="col-4 col-form-label"
+            >Password</label>
             <div class="col-6">
               <input
-                type="password"
-                class="form-control"
                 id="password"
-                name="password"
-                placeholder="Password"
                 v-model="password"
                 v-validate="'required|min:6'"
-                />
+                type="password"
+                class="form-control"
+                name="password"
+                placeholder="Password"
+              >
             </div>
           </div>
           <div class="form-row">
             <div class="col-xl-4 offset-4 text-left">
-              <input type="checkbox" aria-label="Checkbox for following text input">
-              <label for="password" class="col-form-label form-row__label">Remember me</label>
+              <input
+                type="checkbox"
+                aria-label="Checkbox for following text input"
+              >
+              <label
+                for="password"
+                class="col-form-label form-row__label"
+              >Remember me</label>
             </div>
           </div>
           <div class="form-row">
             <div class="offset-4">
-              <button class="btn btn-primary">Login</button>
-              <a href="#" class="form-row__label col-sm-6">Forgot Your Password?</a>
+              <button class="btn btn-primary">
+                Login
+              </button>
+              <a
+                href="#"
+                class="form-row__label col-sm-6"
+              >Forgot Your Password?</a>
             </div>
           </div>
         </form>
       </div>
-      <div class="footer"></div>
+      <div class="footer" />
     </div>
   </div>
 </template>
@@ -59,14 +86,14 @@ import RedirectIfAuthenticated from '@/mixins/RedirectIfAuthenticated'
 
 export default {
   name: 'Authentication',
+  mixins: [RedirectIfAuthenticated],
 
   data: () => ({
     email: '',
     password: '',
     errorMessage: '',
-    error: false,
+    error: false
   }),
-  mixins: [RedirectIfAuthenticated],
   methods: {
     validateFormData() {
       this.errorMessage = null
@@ -84,7 +111,7 @@ export default {
     login() {
       const data = {
         email: this.email,
-        password: this.password,
+        password: this.password
       }
 
       this.$store.dispatch('auth/login', data)
@@ -92,7 +119,7 @@ export default {
           this.error = false
           this.__redirect()
         })
-    },
+    }
   }
 }
 </script>

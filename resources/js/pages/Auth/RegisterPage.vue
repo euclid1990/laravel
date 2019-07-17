@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <registeration></registeration>
+      <registeration />
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@ export default {
   name: 'RegisterPage',
 
   components: {
-    Registeration,
+    Registeration
   },
 
   mixins: [RedirectIfAuthenticated],
@@ -23,7 +23,7 @@ export default {
     next(vm => {
       vm.__protectRoute()
     })
-  },
+  }
 }
 </script>
 

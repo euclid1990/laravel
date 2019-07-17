@@ -1,8 +1,15 @@
 <template>
   <div>
-    <img alt="Vue logo" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg" class="logo">
-    <div class="w-100"></div>
-    <label for="" class="dashboad-label">Dashboard</label>
+    <img
+      alt="Vue logo"
+      src="https://upload.wikimedia.org/wikipedia/commons/9/95/Vue.js_Logo_2.svg"
+      class="logo"
+    >
+    <div class="w-100" />
+    <label
+      for=""
+      class="dashboad-label"
+    >Dashboard</label>
   </div>
 </template>
 

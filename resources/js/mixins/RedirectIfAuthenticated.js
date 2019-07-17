@@ -4,7 +4,7 @@ export default {
   computed: {
     ...mapGetters({
       check: 'auth/check'
-    }),
+    })
   },
 
   methods: {
@@ -16,10 +16,10 @@ export default {
 
     __redirect() {
       const redirect = {
-        'path': this.$router.resolve({name: 'dashboard'}).href
+        path: this.$router.resolve({ name: 'dashboard' }).href
       }
 
       this.$router.push(redirect)
-    },
-  },
+    }
+  }
 }
