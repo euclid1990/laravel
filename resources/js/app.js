@@ -4,9 +4,6 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-window.endpoint = require('./endpoint')
-window.Vue = require('vue')
-
 import App from '@/App.vue'
 import router from '@/router'
 
@@ -15,8 +12,11 @@ import store from '@/store'
 
 import BootstrapVue from 'bootstrap-vue'
 import VeeValidate from 'vee-validate'
-import VueSweetalert2 from 'vue-sweetalert2';
+import VueSweetalert2 from 'vue-sweetalert2'
 import Fragment from 'vue-fragment'
+import Vue from 'vue'
+
+window.endpoint = require('./endpoint')
 
 Vue.use(Fragment.Plugin)
 Vue.use(BootstrapVue)
@@ -27,5 +27,5 @@ new Vue({
   render: h => h(App),
   i18n,
   router,
-  store,
+  store
 }).$mount('#app')
