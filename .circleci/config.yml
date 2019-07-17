@@ -52,7 +52,9 @@ jobs:
       - frontend_cache
       - run:
           name: "Check coding convention"
-          command: yarn
+          command: |
+            npm run eslint.run
+            npm run stylelint.run
       - run:
           name: "Run unit test cases"
           command: yarn
