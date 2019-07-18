@@ -1,5 +1,5 @@
 import { $t } from '@/utils/i18n'
-import Sweetalert2 from 'sweetalert2';
+import Sweetalert2 from 'sweetalert2'
 
 const base = {
   reverseButtons: true,
@@ -10,17 +10,17 @@ const base = {
 const baseconfig = {
   warning: {
     ...base,
-    type: 'warning',
+    type: 'warning'
 
   },
   error: {
     ...base,
-    type: 'error',
-    
+    type: 'error'
+
   },
   success: {
     ...base,
-    type: 'success',
+    type: 'success'
   }
 }
 

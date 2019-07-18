@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import Formatter from '@/utils/i18n/formatter'
 import axios from 'axios'
@@ -20,7 +20,7 @@ const i18n = new VueI18n({
 
 loadedLanguages.push(locale)
 
-function setI18nLanguage (lang) {
+function setI18nLanguage(lang) {
   i18n.locale = lang
   axios.defaults.headers.common['Accept-Language'] = lang
   document.querySelector('html').setAttribute('lang', lang)
@@ -30,7 +30,7 @@ function setI18nLanguage (lang) {
 
 const $t = i18n.tc.bind(i18n)
 
-function loadLanguageAsync (lang) {
+function loadLanguageAsync(lang) {
   if (i18n.locale !== lang) {
     if (!loadedLanguages.includes(lang)) {
       return import(/* webpackChunkName: "lang-[request]" */ `@/langs/${lang}`).then(msgs => {

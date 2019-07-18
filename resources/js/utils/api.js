@@ -27,7 +27,7 @@ axios.interceptors.response.use(response => Promise.resolve(response.config.orig
     })
   }
 
-  if (status == 401 && store.getters['auth/check']) {
+  if (status === 401 && store.getters['auth/check']) {
     swal('warning', {
       title: $t('error.token_expired.title'),
       text: $t('error.token_expired.text')
@@ -41,8 +41,8 @@ axios.interceptors.response.use(response => Promise.resolve(response.config.orig
 })
 
 const Request = {
-  request({method, options}) {
-    return axios({...options, method})
+  request({ method, options }) {
+    return axios({ ...options, method })
   },
 
   get(options) {
@@ -63,7 +63,7 @@ const Request = {
 
   delete(options) {
     return this.request({ method: 'DELETE', options })
-  },
+  }
 }
 
 export default Request

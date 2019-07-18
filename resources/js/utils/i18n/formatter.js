@@ -2,13 +2,13 @@ import MessageFormat from 'messageformat'
 import { DEFAULT_LANGUAGE } from '@/constants'
 
 export default class CustomFormatter {
-  constructor (options = {}) {
+  constructor(options = {}) {
     this._locale = options.locale || DEFAULT_LANGUAGE
     this._formatter = new MessageFormat(this._locale)
     this._caches = Object.create(null)
   }
 
-  interpolate (message, values) {
+  interpolate(message, values) {
     let fn = this._caches[message]
     if (!fn) {
       fn = this._formatter.compile(message, this._locale)
