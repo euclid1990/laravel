@@ -16,5 +16,4 @@ yarn-error.log
 docker-compose.yml
 public/examples
 reports
-composer.lock
 package-lock.json

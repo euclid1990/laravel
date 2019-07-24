@@ -9,6 +9,15 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Response;
 use stdClass;
+use App\Events\ExceptionThrown;
+use App\Exceptions\Api\ActionException;
+use App\Exceptions\Api\ApiException;
+use App\Exceptions\Api\NotFoundException;
+use App\Exceptions\Api\NotOwnerException;
+use App\Exceptions\Api\UnknownException;
+use App\Exceptions\Permission\PermissionDoesNotExist;
+use App\Exceptions\Permission\RoleDoesNotExist;
+use App\Exceptions\Permission\UnauthorizedException;
 
 class Handler extends ExceptionHandler
 {
@@ -18,7 +27,14 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        ActionException::class,
+        ApiException::class,
+        NotFoundException::class,
+        NotOwnerException::class,
+        UnknownException::class,
+        PermissionDoesNotExist::class,
+        RoleDoesNotExist::class,
+        UnauthorizedException::class,
     ];
 
     /**
@@ -39,7 +55,9 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        parent::report($exception);
+        if (parent::report($exception)) {
+            event(new ExceptionThrown($exception));
+        }
     }
 
     /**
