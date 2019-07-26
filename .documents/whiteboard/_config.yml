@@ -17,19 +17,25 @@ root: /
 # Directory
 source_dir: source
 public_dir: public
+i18n_dir: :lang
+skip_render:
+
+# Writing
 relative_link: true
 future: true
-
 highlight:
   enable: true
   line_number: false
   auto_detect: false
   tab_replace:
 
-# Whiteboard theme
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
 theme: whiteboard
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type:
+
