@@ -22,7 +22,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'v1', 'as' => 'api.v1.'], functi
         Route::post('password/reset', 'ForgotPasswordController@reset')->name('password.reset');
 
         Route::group(['middleware' => ['auth:api']], function () {
-	        Route::post('logout', 'LoginController@logout')->name('logout');
-	    });
+            Route::post('logout', 'LoginController@logout')->name('logout');
+        });
     });
 });

@@ -55,7 +55,7 @@ services:
     restart: on-failure
     ports:
       - "8080:80"
-      - "8443:443"
+      - "9443:443"
       - "8444:444"
       - "8445:445"
     volumes:
