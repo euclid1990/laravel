@@ -12,10 +12,12 @@
 - [x] Init Laravel
 - [x] Init Docker development environment
 - [x] Create base directory structure
+- [x] Integrate coding convention checking tools ([PHP Codesniffer](https://github.com/squizlabs/PHP_CodeSniffer)/[EsLint](https://github.com/standard/eslint-config-standard)/[StyleLint](https://github.com/stylelint/stylelint-config-standard))
 - [x] Continuous Integration configuration (~~Circle CI~~, Sun CI)
-- [ ] Implement SSR Sign In | Sign Up | Sign Out + Unit Test
-- [ ] Implement SPA Sign In | Sign Up | Sign Out + Unit Test
+- [x] Implement SSR Sign In | Sign Up | Sign Out + Unit Test
+- [x] Implement SPA Sign In | Sign Up | Sign Out + Unit Test
 - [x] Implement user's role base authorization + Unit Test
+- [x] Implement exception handle and report to chat app (~~Chatwork~~, ~~Slack~~)
 - [ ] Implement upload file + Unit Test
 - [ ] Implement resize/rotate/crop image + Unit Test
 - [ ] Implement read/write CSV + Unit Test
@@ -31,7 +33,7 @@ To install the development dependencies you will need:
 
 ## Development
 
-```terminal
+```zsh
 $ chmod a+x ./docker.sh
 $ ./docker.sh start
 ```
@@ -43,29 +45,38 @@ $ ./docker.sh start
 ## Build
 
 - For re-build docker images and re-create containers
-```terminal
+```zsh
 $ ./docker.sh test-build
 ```
 - Attach to a running container
-```terminal
+```zsh
 $ ./docker.sh exec {service_name}
 ```
 
 ## Testing
 
+```zsh
+$ ./docker.sh exec php
+$ vendor/bin/phpunit
+```
+
 ## Linting
 
 - PHP code
-```terminal
+```zsh
 $ ./docker.sh exec php
 ### List coding standard rules
 $ vendor/bin/phpcs -i
 ### Run phpcs check
-$ vendor/bin/phpcs --standard=SunOS . --encoding=utf-8
+$ vendor/bin/phpcs --extensions=php --standard=SunOS --encoding=utf-8 .
 ```
-- Javascript code
-```terminal
-$ TBD
+- Frontend code
+```zsh
+$ ./docker.sh exec node
+### Run javascript check
+$ yarn eslint.run
+### Run css check
+$ yarn stylelint.run
 ```
 
 ## Contribute

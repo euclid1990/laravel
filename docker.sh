@@ -29,6 +29,7 @@ export USERID=$(id -u)
 export GROUPID=$(id -g)
 command_action=${1-}
 command_service=${2-}
+command_service_run=${3-}
 docker_compose="/usr/local/bin/docker-compose"
 docker_dev_yml="docker-compose.dev.yml"
 
@@ -133,7 +134,11 @@ docker_restart() {
 docker_exec() {
   message="Exec"
   service=${1:-}
-  $docker_compose -f $docker_dev_yml exec "$service" /bin/bash
+  command=${2:-}
+  if [ -z "$command" ]; then
+    command="/bin/bash"
+  fi
+  $docker_compose -f $docker_dev_yml exec "$service" $command
 }
 
 docker_remove_dangling_images() {
@@ -177,7 +182,7 @@ action_restart() {
 
 action_exec() {
   change_context_dir
-  docker_exec $command_service
+  docker_exec $command_service $command_service_run
 }
 
 action_ps() {
