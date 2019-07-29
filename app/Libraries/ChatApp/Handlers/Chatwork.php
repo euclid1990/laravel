@@ -73,13 +73,13 @@ class Chatwork implements ChatAppHandler
     public function __construct(ChatworkMessage $message)
     {
         $this->message = $message;
-        $this->withHeader([]);
     }
 
     public function withEnv()
     {
         $this->endPoint = 'rooms/' . env('CHATWORK_ROOM_ID') . '/messages';
         $this->apiKey = env('CHATWORK_API_KEY');
+        $this->withHeader([]);
 
         return $this;
     }
@@ -94,6 +94,7 @@ class Chatwork implements ChatAppHandler
     public function withApiKey($apiKey)
     {
         $this->apiKey = $apiKey;
+        $this->withHeader([]);
 
         return $this;
     }
