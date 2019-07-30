@@ -18,6 +18,7 @@ use App\Exceptions\Api\UnknownException;
 use App\Exceptions\Permission\PermissionDoesNotExist;
 use App\Exceptions\Permission\RoleDoesNotExist;
 use App\Exceptions\Permission\UnauthorizedException;
+use App\Libraries\ChatApp\ChatAppException;
 
 class Handler extends ExceptionHandler
 {
@@ -35,6 +36,7 @@ class Handler extends ExceptionHandler
         PermissionDoesNotExist::class,
         RoleDoesNotExist::class,
         UnauthorizedException::class,
+        ChatAppException::class,
     ];
 
     /**
@@ -55,9 +57,11 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if (parent::report($exception)) {
+        if ($this->shouldReport($exception)) {
             event(new ExceptionThrown($exception));
         }
+
+        return parent::report($exception);
     }
 
     /**

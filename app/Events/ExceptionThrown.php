@@ -2,13 +2,11 @@
 
 namespace App\Events;
 
-use Illuminate\Queue\SerializesModels;
 use Exception;
+use Throwable;
 
 class ExceptionThrown
 {
-    use SerializesModels;
-
     /**
      * @var string
      */
@@ -126,8 +124,12 @@ class ExceptionThrown
 
     public function getGit()
     {
-        return array_filter([
-            'commit' => env('APP_VERSION'),
-        ]);
+        try {
+            return array_filter([
+                'commit' => env('APP_VERSION'),
+            ]);
+        } catch (Throwable $e) {
+            return [];
+        }
     }
 }

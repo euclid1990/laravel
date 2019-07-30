@@ -11,7 +11,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-
 class ResetPasswordControllerTest extends TestCase
 {
     use DatabaseTransactions;
@@ -40,7 +39,7 @@ class ResetPasswordControllerTest extends TestCase
         $resetToken = $this->authService->generateResetToken($user);
 
         $response = $this->from(route('password.request'))->post(route('password.update'), [
-        		'token' => $resetToken,
+                'token' => $resetToken,
                 'password' => $password,
                 'password_confirmation' => $password,
             ])
@@ -57,7 +56,7 @@ class ResetPasswordControllerTest extends TestCase
         $resetToken = $this->authService->generateResetToken($user);
 
         $response = $this->from(route('password.reset', ['token' => 'someinvalidtoken']))->post(route('password.update'), [
-        		'token' => 'someinvalidtoken',
+                'token' => 'someinvalidtoken',
                 'password' => $password,
                 'password_confirmation' => $password,
             ])

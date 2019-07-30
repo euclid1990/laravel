@@ -20,14 +20,14 @@ class ForgetPasswordControllerTest extends TestCase
         $response->assertViewIs('auth.passwords.email');
     }
 
-	public function testUserReceivesAnEmailWithAPasswordResetLink()
+    public function testUserReceivesAnEmailWithAPasswordResetLink()
     {
         Mail::fake();
         $user = factory(User::class)->create([
             'email' => 'phamtritrung39@gmail.com',
             'password' => $password = '12345678',
         ]);
-        
+
         $response = $this->post(route('password.email'), [
             'email' => $user->email,
         ]);
@@ -36,12 +36,12 @@ class ForgetPasswordControllerTest extends TestCase
         $this->assertNotNull($token = DB::table('password_resets')->first());
 
         Mail::assertQueued(\App\Mail\MailForgotPassword::class, function ($mail) use ($user) {
-            $fake_mail = new \ReflectionClass($mail);
-            $mail_user = $fake_mail->getProperty('user');
-            $mail_user->setAccessible(true);
-            $mail_clone = $mail_user->getValue($mail);
+            $fakeMail = new \ReflectionClass($mail);
+            $mailUser = $fakeMail->getProperty('user');
+            $mailUser->setAccessible(true);
+            $mailClone = $mailUser->getValue($mail);
 
-            return $mail_clone->id === $user->id;
+            return $mailClone->id === $user->id;
         });
     }
 }
