@@ -32,6 +32,11 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('email/verify', 'Auth\VerificationController@show')->name('verification.notice');
     Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
     Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
+    // file
+    Route::get('file/upload', 'FileController@index')->name('file.index');
+    Route::post('file/upload', 'FileController@upload')->name('file.upload');
+
+    Route::get('/storage/{filePath}', 'FileController@localFileServe')->where(['filePath' => '.*'])->name('local.security_file')->middleware('signed');
 });
 
 /*

@@ -24,6 +24,8 @@ RUN apt-get update && apt-get install -y \
     supervisor \
     sasl2-bin \
     libpq-dev \
+    libgd3 \
+    libgd-dev \
     libmemcached-dev \
     libjpeg-dev \
     libfreetype6-dev \
@@ -49,9 +51,9 @@ RUN apt-get update && apt-get install -y \
 
 # Configure GD library
 RUN docker-php-ext-configure gd \
-    --enable-gd-native-ttf \
-    --with-jpeg-dir=/usr/lib \
-    --with-freetype-dir=/usr/include/freetype2
+    --with-gd \
+    --with-jpeg-dir \
+    --with-freetype-dir
 
 # Install mongodb, xdebug, igbinary, msgpack, mcrypt
 RUN pecl install mongodb xdebug memcached-3.1.3 mcrypt-1.0.2 igbinary-3.0.1 msgpack-2.0.3 memcached-3.1.3 \

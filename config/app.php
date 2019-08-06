@@ -173,11 +173,11 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-        App\Providers\ChatAppProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\PermissionServiceProvider::class,
+        App\Providers\ChatAppProvider::class,
         App\Providers\RepositoryServiceProvider::class,
-
+        App\Providers\PermissionServiceProvider::class,
+        App\Providers\FileManagerProvider::class,
     ],
 
     /*
@@ -228,6 +228,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'FileManager' => App\Libraries\FileManager\Facade\FileManager::class,
 
     ],
 
