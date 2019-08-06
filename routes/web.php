@@ -35,6 +35,11 @@ Route::group(['namespace' => 'Web'], function () {
     // Import, export file csv, excel to database
     Route::get('import', 'ImportController@index')->name('import.index');
     Route::post('import', 'ImportController@import')->name('import.create');
+    // file
+    Route::get('file/upload', 'FileController@index')->name('file.index');
+    Route::post('file/upload', 'FileController@upload')->name('file.upload');
+
+    Route::get('/storage/{filePath}', 'FileController@localFileServe')->where(['filePath' => '.*'])->name('local.security_file')->middleware('signed');
 });
 
 /*

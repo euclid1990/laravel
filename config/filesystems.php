@@ -62,6 +62,13 @@ return [
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
+            'serve_via_cloudfront' => env('AWS_S3_VIA_CLOUDFRONT'),
+            'cloudfront' => [
+                'protocol' => env('AWS_CLOUDFRONT_PROTOCOL'),
+                'domain' => env('AWS_CLOUDFRONT_DOMAIN'),
+                'key_pair_id' => env('AWS_CLOUDFRONT_KEY_PAIR_ID'),
+                'private_key_path' => env('AWS_CLOUDFRONT_PRIVATE_KEY_PATH'),
+            ],
         ],
 
     ],
