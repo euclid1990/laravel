@@ -19,22 +19,42 @@ axios.interceptors.request.use(request => {
 // Response interceptor
 axios.interceptors.response.use(response => Promise.resolve(response.config.originData ? response : response.data), error => {
   const { status } = error.response
-
-  if (status >= 500) {
+  switch (status) {
+  case 401:
+    if (store.getters['auth/check']) {
+      return swal('warning', {
+        title: $t('error.token_expired.title'),
+        text: $t('error.token_expired.text')
+      }).then(() => {
+        store.commit('auth/LOGOUT')
+        router.push({ name: 'login' })
+      })
+    }
+    break
+  case 500:
     swal('error', {
-      title: status,
-      text: $t('error.server')
+      title: $t('error.server.500'),
+      text: $t('error.server.text')
     })
-  }
-
-  if (status === 401 && store.getters['auth/check']) {
-    swal('warning', {
-      title: $t('error.token_expired.title'),
-      text: $t('error.token_expired.text')
-    }).then(() => {
-      store.commit('auth/LOGOUT')
-      router.push({ name: 'login' })
+    break
+  case 403:
+    swal('error', {
+      title: $t('error.forbidden.403'),
+      text: $t('error.forbidden.text')
     })
+    break
+  case 404:
+    swal('error', {
+      title: $t('error.not_found.404'),
+      text: $t('error.not_found.text')
+    })
+    break
+  default:
+    swal('error', {
+      title: $t('error.unknown.title'),
+      text: $t('error.unknown.text')
+    })
+    break
   }
 
   return Promise.reject(error)

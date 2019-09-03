@@ -15,8 +15,8 @@
         <script type="text/javascript" charset="utf-8">
             window.config = {
                 lang: "{{ str_replace('_', '-', app()->getLocale()) }}",
-                csrf_token: "{{ csrf_token() }}"
-            }
+                configExport: {!! json_encode(config('common.export')) !!},
+            };
         </script>
     </body>
     <script src="{{ mix('js/manifest.js') }}"></script>

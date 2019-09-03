@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Validator;
 class ImportFileCsvRequest extends FormRequest
 {
 
-    public $a = 3;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,6 +28,7 @@ class ImportFileCsvRequest extends FormRequest
     public function rules()
     {
         $cfg = config('common.import.validation.file');
+
         return [
             'file' => [
                 'bail',

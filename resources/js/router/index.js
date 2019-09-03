@@ -5,6 +5,7 @@ import AppLayout from '@/pages/Layout/AppLayout'
 import LoginPage from '@/pages/Auth/LoginPage'
 import RegisterPage from '@/pages/Auth/RegisterPage'
 import DashboardPage from '@/pages/DashboardPage'
+import ExportPage from '@/pages/Export'
 
 Vue.use(Router)
 
@@ -32,6 +33,11 @@ const router = new Router({
           path: 'dashboard',
           name: 'dashboard',
           component: DashboardPage
+        },
+        {
+          path: 'export',
+          name: 'export',
+          component: ExportPage
         }
       ]
     }

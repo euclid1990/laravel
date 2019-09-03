@@ -9,6 +9,8 @@ use App\Repositories\AppRepository;
 use App\Repositories\AppRepositoryInterface;
 use App\Repositories\ImportRepository;
 use App\Repositories\ImportRepositoryInterface;
+use App\Repositories\ExportRepository;
+use App\Repositories\ExportRepositoryInterface;
 use App\Repositories\PasswordResetTokenRepository;
 use App\Repositories\PasswordResetTokenRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -32,5 +34,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(PasswordResetTokenRepositoryInterface::class, PasswordResetTokenRepository::class);
         $this->app->bind(ImportRepositoryInterface::class, ImportRepository::class);
+        $this->app->bind(ExportRepositoryInterface::class, ExportRepository::class);
     }
 }
