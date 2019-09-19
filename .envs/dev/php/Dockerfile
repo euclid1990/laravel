@@ -54,7 +54,7 @@ RUN docker-php-ext-configure gd \
     --with-freetype-dir=/usr/include/freetype2
 
 # Install mongodb, xdebug, igbinary, msgpack, mcrypt
-RUN pecl install mongodb xdebug memcached-3.1.3 mcrypt-1.0.2 igbinary-3.0.1 msgpack-2.0.3 memcached-3.1.3 \
+RUN pecl install mongodb xdebug memcached-3.1.3 mcrypt-1.0.2 igbinary-3.0.1 msgpack-2.0.3 \
     && docker-php-ext-enable mongodb xdebug mcrypt igbinary msgpack
 
 # Install memcached with sasl
@@ -113,7 +113,7 @@ COPY common/wait-for-it.sh /scripts/
 RUN chmod a+x /scripts/*.sh
 
 # Create new username: php-fpm
-RUN useradd -ms /bin/bash php-fpm
+RUN useradd -ms /bin/bash php-fpm --no-log-init
 # Modify php-fpm user_id:group_id to current host_user_id:host_group_id
 RUN usermod -u $USERID php-fpm
 RUN groupmod -g $GROUPID php-fpm || exit 0
