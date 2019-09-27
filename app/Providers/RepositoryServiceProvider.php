@@ -3,12 +3,14 @@
 namespace App\Providers;
 
 use App\Models\User;
-use App\Repositories\UserRepository;
-use App\Repositories\UserRepositoryInterface;
 use App\Repositories\AppRepository;
 use App\Repositories\AppRepositoryInterface;
 use App\Repositories\ImportRepository;
 use App\Repositories\ImportRepositoryInterface;
+use App\Repositories\UserRepository;
+use App\Repositories\UserRepositoryInterface;
+use App\Repositories\FileRepository;
+use App\Repositories\FileRepositoryInterface;
 use App\Repositories\PasswordResetTokenRepository;
 use App\Repositories\PasswordResetTokenRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -32,5 +34,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(PasswordResetTokenRepositoryInterface::class, PasswordResetTokenRepository::class);
         $this->app->bind(ImportRepositoryInterface::class, ImportRepository::class);
+        $this->app->bind(FileRepositoryInterface::class, FileRepository::class);
     }
 }

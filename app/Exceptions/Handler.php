@@ -58,7 +58,9 @@ class Handler extends ExceptionHandler
     public function report(Exception $exception)
     {
         if ($this->shouldReport($exception)) {
-            event(new ExceptionThrown($exception));
+            if (!app()->isLocal()) {
+                event(new ExceptionThrown($exception));
+            }
         }
 
         return parent::report($exception);
