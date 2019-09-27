@@ -13,14 +13,14 @@
 - [x] Init Docker development environment
 - [x] Create base directory structure
 - [x] Integrate coding convention checking tools ([PHP Codesniffer](https://github.com/squizlabs/PHP_CodeSniffer)/[EsLint](https://github.com/standard/eslint-config-standard)/[StyleLint](https://github.com/stylelint/stylelint-config-standard))
-- [x] Continuous Integration configuration (~~Circle CI~~, Sun CI)
+- [x] Continuous Integration configuration (Circle CI, ~~Sun CI~~)
 - [x] Implement SSR Sign In | Sign Up | Sign Out + Unit Test
 - [x] Implement SPA Sign In | Sign Up | Sign Out + Unit Test
 - [x] Implement user's role base authorization + Unit Test
-- [x] Implement exception handle and report to chat app (~~Chatwork~~, ~~Slack~~)
-- [ ] Implement upload file + Unit Test
-- [ ] Implement resize/rotate/crop image + Unit Test
-- [ ] Implement read/write CSV + Unit Test
+- [x] Implement exception handle and report to chat app (Chatwork, Slack)
+- [x] Implement upload file + Unit Test
+- [x] Implement resize/rotate/crop image + Unit Test
+- [x] Implement read/write CSV + ~~Unit Test~~
 - [ ] Implement read/write Excel + Unit Test
 - [ ] Implement Logger + Unit Test
 
