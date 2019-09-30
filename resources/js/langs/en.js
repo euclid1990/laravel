@@ -54,6 +54,34 @@ export default {
       separate_char_validate: 'Separate char',
       encoding_type_validate: 'Encoding type',
       allow_column_validate: 'Export column'
+    },
+    auth: {
+      message: {
+        email_reset_password: {
+          title: 'The reset password link has been sent',
+          text: 'Please check your email to complete!'
+        },
+        reset_password: {
+          text: 'Your password has been reset'
+        }
+      },
+      labels: {
+        forgot_password: 'Forgot Password',
+        email: 'E-Mail Address',
+        password: 'Password',
+        reset_password: 'Reset Password',
+        confirm_password: 'Confirm Password',
+        login: 'Login',
+        remember_me: 'Remember me',
+        forgot_your_password: 'Forgot Your Password',
+        register: 'Register',
+        name: 'Name'
+      }
+    },
+    pages: {
+      title: {
+        dashboard: 'Dashboard'
+      }
     }
   }
 }

@@ -2,8 +2,8 @@
   <div class="auth-panel col-12">
     <div class="auth-panel__wrapper col-xl-6 col-md-8 col-10">
       <div class="auth-panel__wrapper__header col-6__header">
-        <div class="col-1">
-          {{ $t('auth.labels.register') }}
+        <div class="col-4">
+          {{ $t('auth.labels.reset_password') }}
         </div>
       </div>
       <div>
@@ -16,40 +16,6 @@
             class="alert alert-danger col-sm-10 offset-sm-1 error"
           >
             {{ errorMessage }}
-          </div>
-          <div class="form-group row form-row">
-            <label
-              for="name"
-              class="col-4 col-form-label"
-            >{{ $t('auth.labels.name') }}</label>
-            <div class="col-6">
-              <input
-                id="name"
-                v-model="name"
-                v-validate="'required'"
-                type="text"
-                class="form-control"
-                name="name"
-                :placeholder="$t('auth.labels.name')"
-              >
-            </div>
-          </div>
-          <div class="form-group row form-row">
-            <label
-              for="email"
-              class="col-4 col-form-label"
-            >{{ $t('auth.labels.email') }}</label>
-            <div class="col-6">
-              <input
-                id="email"
-                v-model="email"
-                v-validate="'required|email'"
-                type="email"
-                class="form-control"
-                name="email"
-                :placeholder="$t('auth.labels.email')"
-              >
-            </div>
           </div>
           <div class="form-group row form-row">
             <label
@@ -90,7 +56,7 @@
           <div class="form-row">
             <div class="offset-4">
               <button class="btn btn-primary">
-                {{ $t('auth.labels.register') }}
+                {{ $t('auth.labels.reset_password') }}
               </button>
             </div>
           </div>
@@ -102,14 +68,14 @@
 </template>
 
 <script>
+import swal from '@/utils/swal'
 import { $t } from '@/utils/i18n'
 
 export default {
-  name: 'Registeration',
+  name: 'ResetPassword',
 
   data: () => ({
-    name: '',
-    email: '',
+    token: '',
     password: '',
     password_confirmation: '',
     errorMessage: '',
@@ -122,29 +88,28 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.error = false
-          this.register()
+          this.resetPassword()
         } else {
           this.error = true
-          this.errorMessage = this.errors.first('email') ||
-            this.errors.first('password') ||
-            this.errors.first('name') ||
+          this.errorMessage = this.errors.first('password') ||
             this.errors.first('password_confirmation')
         }
       })
     },
 
-    register() {
+    async resetPassword() {
       const data = {
-        name: this.name,
-        email: this.email,
         password: this.password,
-        password_confirmation: this.password_confirmation
+        password_confirmation: this.password_confirmation,
+        token: this.$route.params.token
       }
-      this.$store.dispatch('auth/register', data)
-        .then(() => {
-          this.error = false
-          this.$router.push({ name: 'dashboard' })
-        })
+      await this.$store.dispatch('auth/resetPassword', data)
+      this.error = false
+      swal('success', {
+        text: $t('auth.message.reset_password.text')
+      }, () => {
+        this.$router.push({ name: 'login' })
+      })
     }
   }
 }

@@ -9,11 +9,12 @@
     <label
       for=""
       class="dashboad-label"
-    >Dashboard</label>
+    >{{ $t('pages.title.dashboard') }}</label>
   </div>
 </template>
 
 <script>
+import { $t } from '@/utils/i18n'
 export default {
   name: 'DashboardPage',
   components: {

@@ -4,8 +4,11 @@ import Router from 'vue-router'
 import AppLayout from '@/pages/Layout/AppLayout'
 import LoginPage from '@/pages/Auth/LoginPage'
 import RegisterPage from '@/pages/Auth/RegisterPage'
+import ForgotPassword from '@/pages/Auth/ForgotPassword'
+import ResetPassword from '@/pages/Auth/ResetPassword'
 import DashboardPage from '@/pages/DashboardPage'
 import ExportPage from '@/pages/Export'
+import middlewares from '@/router/middlewares'
 
 Vue.use(Router)
 
@@ -15,24 +18,48 @@ const router = new Router({
     {
       path: '/client/vue',
       component: AppLayout,
-      meta: { globalAccess: true },
       children: [
         {
           path: 'login',
           name: 'login',
           component: LoginPage,
-          meta: { globalAccess: true }
+          meta: {
+            globalAccess: true
+          }
         },
         {
           path: 'register',
           name: 'register',
           component: RegisterPage,
-          meta: { globalAccess: true }
+          meta: {
+            globalAccess: true
+          }
+        },
+        {
+          path: 'forgot-password',
+          name: 'forgot-password',
+          component: ForgotPassword,
+          meta: {
+            globalAccess: true
+          }
+        },
+        {
+          path: 'reset-password/:token',
+          name: 'reset-password',
+          component: ResetPassword,
+          meta: {
+            globalAccess: true
+          }
         },
         {
           path: 'dashboard',
           name: 'dashboard',
-          component: DashboardPage
+          component: DashboardPage,
+          meta: {
+            middleware: [
+              middlewares.auth
+            ]
+          }
         },
         {
           path: 'export',

@@ -3,13 +3,13 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
-      check: 'auth/check'
+      authenticated: 'auth/authenticated'
     })
   },
 
   methods: {
     __protectRoute() {
-      if (this.check) {
+      if (this.authenticated) {
         this.__redirect()
       }
     },

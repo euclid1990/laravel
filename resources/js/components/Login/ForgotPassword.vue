@@ -2,8 +2,8 @@
   <div class="auth-panel col-12">
     <div class="auth-panel__wrapper col-xl-6 col-md-8 col-10">
       <div class="auth-panel__wrapper__header col-6__header">
-        <div class="col-1">
-          {{ $t('auth.labels.login') }}
+        <div class="col-3">
+          {{ $t('auth.labels.forgot_password') }}
         </div>
       </div>
       <div>
@@ -34,43 +34,11 @@
               >
             </div>
           </div>
-          <div class="form-group row form-row">
-            <label
-              for="password"
-              class="col-4 col-form-label"
-            >{{ $t('auth.labels.password') }}</label>
-            <div class="col-6">
-              <input
-                id="password"
-                v-model="password"
-                v-validate="'required|min:6'"
-                type="password"
-                class="form-control"
-                name="password"
-                :placeholder="$t('auth.labels.password')"
-              >
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="col-xl-4 offset-4 text-left">
-              <input
-                type="checkbox"
-                aria-label="Checkbox for following text input"
-              >
-              <label
-                for="password"
-                class="col-form-label form-row__label"
-              >{{ $t('auth.labels.remember_me') }}</label>
-            </div>
-          </div>
           <div class="form-row">
             <div class="offset-4">
               <button class="btn btn-primary">
-                {{ $t('auth.labels.login') }}
+                {{ $t('auth.labels.reset_password') }}
               </button>
-              <router-link :to="{name: 'forgot-password'}">
-                {{ $t('auth.labels.forgot_your_password') }}
-              </router-link>
             </div>
           </div>
         </form>
@@ -81,16 +49,16 @@
 </template>
 
 <script>
-import { $t } from '@/utils/i18n'
 import RedirectIfAuthenticated from '@/mixins/RedirectIfAuthenticated'
+import swal from '@/utils/swal'
+import { $t } from '@/utils/i18n'
 
 export default {
-  name: 'Authentication',
+  name: 'ForgotPassword',
   mixins: [RedirectIfAuthenticated],
 
   data: () => ({
     email: '',
-    password: '',
     errorMessage: '',
     error: false
   }),
@@ -100,25 +68,25 @@ export default {
       this.$validator.validateAll().then(result => {
         if (result) {
           this.error = false
-          this.login()
+          this.resetPassword()
         } else {
           this.error = true
-          this.errorMessage = this.errors.first('email') || this.errors.first('password')
+          this.errorMessage = this.errors.first('email')
         }
       })
     },
 
-    login() {
+    async resetPassword() {
       const data = {
-        email: this.email,
-        password: this.password
+        email: this.email
       }
 
-      this.$store.dispatch('auth/login', data)
-        .then((res) => {
-          this.error = false
-          this.__redirect()
-        })
+      const response = await this.$store.dispatch('auth/emailResetPassword', data)
+      const text = response.message ? response.message : $t('auth.message.email_reset_password.text')
+      swal('success', {
+        text,
+        title: $t('auth.message.email_reset_password.title')
+      })
     }
   }
 }

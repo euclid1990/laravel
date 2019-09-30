@@ -6,7 +6,7 @@ return [
     'auth' => [
         'reset_password' => [
             'token_timeout' => 60,
-            'url' => 'reset-password/%s',
+            'url' => 'client/vue/reset-password/%s',
         ],
         'token_lifetime_hour' => [
             'access_token' => 1,

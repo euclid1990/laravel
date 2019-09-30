@@ -4,8 +4,13 @@ import store from '@/store'
 import { $t } from '@/utils/i18n'
 import swal from '@/utils/swal'
 import router from '@/router'
+import env from '@/utils/env'
 
 axios.interceptors.request.use(request => {
+  if (env('MIX_BASIC_AUTHEN') === '' && env('NODE_ENV') === 'development') {
+    console.error('Missing authentication credentical. Please check your .env file again.')
+  }
+
   const token = store.getters['auth/' + ACCESS_TOKEN]
   request.headers.common['Authorization'] = `Basic ${btoa(process.env.MIX_BASIC_AUTHEN)}`
   if (token) {
