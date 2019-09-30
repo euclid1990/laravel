@@ -26,9 +26,10 @@ RUN useradd -ms /bin/bash cert --no-log-init
 # Modify cert user_id:group_id to current host_user_id:host_group_id
 RUN usermod -u $USERID cert
 RUN groupmod -g $GROUPID cert
-# Change owner of /files directory to user cert
-RUN chown -R cert:cert /files
+
 # Set user to running image
-USER cert
+USER root
+
+ENTRYPOINT ["sh", "/scripts/entrypoint.sh"]
 
 CMD ["/scripts/command.sh", "localhost"]
