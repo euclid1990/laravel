@@ -105,14 +105,14 @@ class CheckImportFile implements Rule
         $row = 1;
         $insert = [];
         $nextLine = fgetcsv($file);
-        $totalColumn = trans(config('common.import.validation.file.header'));
+        $totalColumn = config('common.import.validation.file.header');
         while ($nextLine !== false) {
             $result = $this->isVaildRow($nextLine, $totalColumn, $row);
             if ($result !== true) {
                 return false;
             }
             $row++;
-            $insert[] = array_combine($firstLine, $nextLine);
+            $insert[] = array_combine(array_keys($totalColumn), $nextLine);
             $nextLine = fgetcsv($file);
         }
         $this->request->merge(['data' => $insert]);
