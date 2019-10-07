@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Web;
 use App\Http\Requests\ImportFileCsvRequest;
 use App\Http\Controllers\Controller;
 use App\Services\ImportService;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 
 class ImportController extends Controller
 {
@@ -17,13 +19,20 @@ class ImportController extends Controller
 
     public function index()
     {
-        return view('imports.index');
+        $user = Auth::user();
+        return view('imports.index', compact('user'));
     }
 
     public function import(ImportFileCsvRequest $request)
     {
-        $this->importService->importFile($request->get('data'));
+        try {
+            $this->importService->importFile($request->get('data'));
 
-        return redirect(route('import.create'))->with('message', trans('import.message.success'));
+            return redirect(route('import.create'))->with('message', trans('import.message.success'));
+        } catch (QueryException $e) {
+            return redirect()->back()->withErrors([
+                'errors' => trans('import.message.import_failed'),
+            ]);
+        }
     }
 }

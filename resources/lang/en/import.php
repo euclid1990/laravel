@@ -9,6 +9,7 @@ return [
         'error_row_name' => 'Name is invalid at row :row, column :column',
         'error_header' => 'The import file header is missing or invalid',
         'error_element' => 'Not enough fields at row :row',
+        'import_failed' => 'Integrity constraint violation. Import file failed',
     ],
     'header_text' => [
         'id' => 'ID',
