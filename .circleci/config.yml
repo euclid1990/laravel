@@ -88,6 +88,9 @@ jobs:
           name: "Check coding convention"
           command: php vendor/bin/phpcs --extensions=php --standard=SunOS --encoding=utf-8 .
       - run:
+          name: "Generate passport key"
+          command: php artisan passport:install
+      - run:
           name: "Run unit test cases"
           command: php -dzend_extension=xdebug.so vendor/bin/phpunit --coverage-clover=./reports/backend/coverage.xml --coverage-html=./reports/backend
           no_output_timeout: 30m
