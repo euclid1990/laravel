@@ -18,3 +18,4 @@ public/examples
 reports
 package-lock.json
 .idea
+/coverage

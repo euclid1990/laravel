@@ -37,8 +37,7 @@ class CheckImportFile implements Rule
      */
     public function passes($attribute, $value)
     {
-        $path = $value['file'];
-        $file = fopen($path, 'r');
+        $file = fopen($value, 'r');
         $result = $this->check($file);
         fclose($file);
         return $result;
@@ -48,7 +47,7 @@ class CheckImportFile implements Rule
      * Check the file title
      *
      * @param   array $firstLine
-     * @return bool
+     * @return  bool
      */
     protected function isValidHeader($firstLine)
     {
@@ -65,34 +64,41 @@ class CheckImportFile implements Rule
      * @param   array $nextLine
      * @param   array $totalColumn
      * @param   int $row
-     * @return bool
+     * @return  array
      */
-    protected function isVaildRow($nextLine, $totalColumn, $row)
+    protected function isValidRow($nextLine, $totalColumn, $row)
     {
         if (count($totalColumn) !== count($nextLine)) {
-            $this->message = trans('import.message.error_element', ['row' => $row]);
-            return false;
+            return [
+                'status' => false,
+                'message' => trans('import.message.error_element', ['row' => $row]),
+            ];
         }
 
         foreach ($nextLine as $key => $value) {
             if (mb_strlen($value) > config('common.import.validation.name.max')) {
                 $column = $key + 1;
-                $this->message = trans('import.message.error_row_name', [
+                $message = trans('import.message.error_row_name', [
                     'row' => $row,
                     'column' => $column,
                 ]);
-                return false;
+                return [
+                    'status' => false,
+                    'message' => $message,
+                ];
             }
         }
-
-        return true;
+        return [
+            'status' => true,
+            'message' => '',
+        ];
     }
 
     /**
      * Check the file before importing
      *
      * @param   array $file
-     * @return bool
+     * @return  bool
      */
     protected function check($file)
     {
@@ -101,14 +107,15 @@ class CheckImportFile implements Rule
             $this->message = trans('import.message.error_header');
             return false;
         }
-
         $row = 1;
         $insert = [];
         $nextLine = fgetcsv($file);
         $totalColumn = config('common.import.validation.file.header');
+
         while ($nextLine !== false) {
-            $result = $this->isVaildRow($nextLine, $totalColumn, $row);
-            if ($result !== true) {
+            $result = $this->isValidRow($nextLine, $totalColumn, $row);
+            if ($result['status'] !== true) {
+                $this->message = $result['message'];
                 return false;
             }
             $row++;

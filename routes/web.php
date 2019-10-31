@@ -33,8 +33,10 @@ Route::group(['namespace' => 'Web'], function () {
     Route::get('email/verify/{id}', 'Auth\VerificationController@verify')->name('verification.verify');
     Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
     // Import, export file csv, excel
-    Route::get('import', 'ImportController@index')->name('import.index');
-    Route::post('import', 'ImportController@import')->name('import.create');
+    Route::group(['middleware' => 'auth'], function () {
+        Route::get('import', 'ImportController@index')->name('import.index');
+        Route::post('import', 'ImportController@import')->name('import.create');
+    });
     Route::get('export', 'ExportController@index')->name('export.index');
     Route::post('export', 'ExportController@export')->name('export.create');
 });

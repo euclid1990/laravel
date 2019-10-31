@@ -9,8 +9,7 @@ class Import extends Model
     protected $guarded = ['id'];
 
     protected $fillable = [
-        'ID',
-        'Name',
-        'Created_At',
+        'name',
+        'created_at',
     ];
 }

@@ -23,9 +23,13 @@ class ExportService
         $current = Carbon::now()->toDateTimeString();
         $cfg = config('common.export');
 
+        $fileName = '';
+
         if (in_array($fileType, array_keys($cfg['types']))) {
-            return $fileName = sprintf($cfg['file_name'], $current) . '.' . $fileType;
+            $fileName = sprintf($cfg['file_name'], $current) . '.' . $fileType;
         }
+
+        return $fileName;
     }
 
     /**

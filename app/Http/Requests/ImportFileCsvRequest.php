@@ -49,7 +49,7 @@ class ImportFileCsvRequest extends FormRequest
     public function withValidator($validator)
     {
         if (!$validator->fails()) {
-            $v = Validator::make(['file' => $this->file()], [
+            $v = Validator::make(['file' => $this->file], [
                 'file' => [new CheckImportFile($this)],
             ]);
             $v->validate();
@@ -60,7 +60,7 @@ class ImportFileCsvRequest extends FormRequest
     {
         return [
             'file.required' => trans('import.message.file_required'),
-            'file.max' => trans('import.message.file_max', ['capacity' => config('common.import.validate.file.max')]),
+            'file.max' => trans('import.message.file_max', ['max' => config('common.import.validation.file.max')]),
         ];
     }
 }

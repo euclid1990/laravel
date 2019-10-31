@@ -24,6 +24,6 @@ class ExportRepository implements ExportRepositoryInterface
      */
     public function select(array $data)
     {
-        return $this->model->select($data)->get()->toArray();
+        return $this->model->get($data)->toArray();
     }
 }
